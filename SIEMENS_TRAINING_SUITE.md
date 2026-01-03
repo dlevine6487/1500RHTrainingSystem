@@ -96,7 +96,10 @@ Devices in the Blue Ring (Standard ET 200SP, IE/PB Link) are "S2".
 1.  **Connection:** Connect to the Blue Ring (Domain 3).
 2.  **MRP:** Set as **Client** in `mrpdomain-3`.
 3.  **Assignment:** Assign to **PLC_1 (System)**.
-    *   *Note:* Unlike R1, these devices don't need special Watchdog tuning for the *Switch* itself, but the standard redundancy hold times apply.
+4.  **Critical Configuration: Watchdog Tuning:**
+    *   **Requirement:** Just like R1 devices, S2 devices must survive the system switchover time (approx 300ms) without disconnecting.
+    *   **Action:** Adjust **Accepted update cycles without IO data** so that `Update Time * Cycles > 300ms`.
+    *   *Example:* 2ms update time * 150 cycles = 300ms watchdog.
 
 ### 2.5 PN/PN Coupler Integration
 The PN/PN Coupler allows data exchange with the external world.
@@ -137,6 +140,6 @@ Validate the independence of the three domains and the bumpless behavior.
 
 ### 3.7 Final Handover Checklist
 *   [ ] **Backbone:** XC208s configured as Clients in D1/D2.
-*   [ ] **R1 Watchdog:** Calculated and set > 300ms (e.g., 2ms * 150 cycles).
+*   [ ] **R1 & S2 Watchdogs:** Calculated and set > 300ms (e.g., 2ms * 150 cycles).
 *   [ ] **Topology:** Verified Split Backbone with R1 bridging.
 *   [ ] **Validation:** All failover tests (A-D) passed without process interruption.
