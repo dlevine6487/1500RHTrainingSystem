@@ -7,7 +7,11 @@
 *   **Differentiate** between Redundancy Roles: R1 (Physically Separated), S2 (System Redundant via Proxy), and Power components (SEL1400).
 *   **Explain** the synchronization mechanism (H-Sync) which is the *only* link between the two redundant sides.
 
-### 1.2 Hardware Inventory & Specifications
+### 1.2 Reference Documents
+*   `Application_Examples_and_Docs/System_Architecture_and_Manuals/s71500rh_manual_en-US_en-US_v21.pdf`
+*   `Application_Examples_and_Docs/System_Architecture_and_Manuals/s71500rh_getting_started_en-US_en-US.pdf`
+
+### 1.3 Hardware Inventory & Specifications
 *   **Controllers:** 2x **CPU 1518HF-4 PN**.
     *   *PLC A:* Manages MRP Domain 1 (Side A).
     *   *PLC B:* Manages MRP Domain 2 (Side B).
@@ -24,7 +28,7 @@
     *   **ET200SP (R1):** Connects to Domain 1 and Domain 2 simultaneously.
     *   **ET200SP (S2):** Connected to Domain 3.
 
-### 1.3 Theoretical Architecture: The Three Domains
+### 1.4 Theoretical Architecture: The Three Domains
 The topology is segmented into three distinct Media Redundancy (MRP) Domains:
 1.  **MRP Domain 1:** The "Side A" Backbone (Ring 1).
 2.  **MRP Domain 2:** The "Side B" Backbone (Ring 2).
@@ -36,7 +40,11 @@ The topology is segmented into three distinct Media Redundancy (MRP) Domains:
 *   **Configure** distinct MRP Domains for Side A and Side B.
 *   **Commission** the separate backbone rings.
 
-### 2.2 Configuration in TIA Portal
+### 2.2 Reference Documents
+*   `Application_Examples_and_Docs/Redundancy_and_MRP/109739614_MRP_DOKU_V10_en.pdf`
+*   `Application_Examples_and_Docs/Redundancy_and_MRP/Switching_System_IP_RH_Systems_EN_V1.1.pdf`
+
+### 2.3 Configuration in TIA Portal
 
 #### Step 1: PLC A (Side A) - MRP Domain 1
 1.  Open **Device Configuration** > **PLC A** > **Profinet Interface**.
@@ -60,7 +68,7 @@ The topology is segmented into three distinct Media Redundancy (MRP) Domains:
     *   **Domain:** `mrpdomain-2`.
     *   **Role:** Client.
 
-### 2.3 Commissioning Verification
+### 2.4 Commissioning Verification
 *   **Check 1:** Go online with PLC A. Verify `mrpdomain-1` is "Ring Closed".
 *   **Check 2:** Go online with PLC B. Verify `mrpdomain-2` is "Ring Closed".
 *   *Note:* These two rings operate completely independently. A break in Domain 1 does not affect Domain 2 status.
@@ -71,7 +79,10 @@ The topology is segmented into three distinct Media Redundancy (MRP) Domains:
 *   **Configure** the XF204-DNA to participate in three different domains.
 *   **Manage** the S2 Subordinate Ring (Domain 3).
 
-### 3.2 The Y-Switch Connections
+### 3.2 Reference Documents
+*   `Application_Examples_and_Docs/Redundancy_and_MRP/109816704_S7-1500H_with_Y-Switch_V1_0_en.pdf`
+
+### 3.3 The Y-Switch Connections
 The XF204-DNA is a unique device that sits at the intersection of all three domains.
 *   **Port 1 (Upstream Left):** Connects to **XC208-A**.
     *   *Configuration:* **Client** in **MRP Domain 1**.
@@ -80,7 +91,7 @@ The XF204-DNA is a unique device that sits at the intersection of all three doma
 *   **Ports 3 & 4 (Downstream):** Form the **Blue Ring**.
     *   *Configuration:* **Manager (Auto)** in **MRP Domain 3**.
 
-### 3.3 Configuration Steps
+### 3.4 Configuration Steps
 1.  **Add XF204-DNA** to the project.
 2.  **Upstream Ports:**
     *   Assign Port 1 to the subnet of PLC A. Set Media Redundancy to Client (`mrpdomain-1`).
@@ -89,13 +100,18 @@ The XF204-DNA is a unique device that sits at the intersection of all three doma
     *   Create a new domain: `mrpdomain-3`.
     *   Set Media Redundancy to **Manager (Auto)**.
 
-### 3.4 The Blue Ring (S2 Sub-System)
+### 3.5 The Blue Ring (S2 Sub-System)
 *   **Components:** ET200SP (S2), IE/PB Link, PN/PN Coupler.
 *   **Config:** All devices in the Blue Ring must be set to **Client** in **MRP Domain 3**.
 
 ## Module 4: Device Integration (R1 vs S2)
 
-### 4.1 R1 Device Integration (Dual Domain)
+### 4.1 Reference Documents
+*   `Application_Examples_and_Docs/Hardware_Components/et200sp_im_155_6_pn_r1_en-US_en-US.pdf`
+*   `Application_Examples_and_Docs/Hardware_Components/pn_pn_coupler_hardware_manual_en-US_en-US.pdf`
+*   `Application_Examples_and_Docs/Redundancy_and_MRP/109926733_S2_Systemredundancy_S7-1500H_G220_DOC_v10_en.pdf`
+
+### 4.2 R1 Device Integration (Dual Domain)
 **Device:** ET200SP with High Availability IM.
 *   **Left Interface (IM 1):** Connects to **XC208-A**.
     *   *MRP:* Client in **Domain 1**.
@@ -103,7 +119,7 @@ The XF204-DNA is a unique device that sits at the intersection of all three doma
     *   *MRP:* Client in **Domain 2**.
 *   **Result:** The device is reachable via either domain.
 
-### 4.2 S2 Device Integration (Single Domain)
+### 4.3 S2 Device Integration (Single Domain)
 **Device:** Standard ET200SP behind DNA.
 *   **Connection:** Ring Port 1 / Ring Port 2 connected to Domain 3.
 *   **MRP:** Client in **Domain 3**.
@@ -111,17 +127,20 @@ The XF204-DNA is a unique device that sits at the intersection of all three doma
 
 ## Module 5: Redundancy Validation Plan
 
-### 5.1 Validation Strategy
+### 5.1 Reference Documents
+*   `Application_Examples_and_Docs/Diagnostics_and_Communication/109763768_Diag_S7_1500RH_DOC_V2_0_en.pdf`
+
+### 5.2 Validation Strategy
 Validate the independence of the three domains.
 
-### 5.2 Test A: Domain 1 Failure
+### 5.3 Test A: Domain 1 Failure
 **Action:** Break the ring in MRP Domain 1 (Unplug cable XC208-A <-> PLC A).
 **Observation:**
 *   PLC A reports `mrpdomain-1` Ring Open.
 *   PLC B reports `mrpdomain-2` Ring Closed (Unaffected).
 *   Process continues.
 
-### 5.3 Test B: Domain 2 Failure
+### 5.4 Test B: Domain 2 Failure
 **Action:** Power off XC208-B.
 **Observation:**
 *   `mrpdomain-2` fails completely.
@@ -129,14 +148,14 @@ Validate the independence of the three domains.
 *   DNA switches upstream traffic to Port 1 (Domain 1).
 *   Process continues.
 
-### 5.4 Test C: Domain 3 (Blue Ring) Break
+### 5.5 Test C: Domain 3 (Blue Ring) Break
 **Action:** Unplug cable in the Blue Ring.
 **Observation:**
 *   XF204-DNA reports `mrpdomain-3` Ring Open.
 *   S2 Devices remain reachable via the alternative path in Domain 3.
 *   Upstream Backbone (Domains 1 & 2) remains Closed/Unaffected.
 
-### 5.5 Final Handover Checklist
+### 5.6 Final Handover Checklist
 *   [ ] **Domain 1:** Configured and Closed (Side A).
 *   [ ] **Domain 2:** Configured and Closed (Side B).
 *   [ ] **Domain 3:** Configured and Closed (Blue Ring/DNA).
