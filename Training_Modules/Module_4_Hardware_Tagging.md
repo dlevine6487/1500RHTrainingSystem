@@ -20,19 +20,7 @@ This module outlines the IO tag assignments for the two Remote IO stations, ET20
 | %I121.4 | VS_YSwitch_Fault_SideA_1 | Bool | Value Status Y Switch Fault Side A Channel 1 |
 | %I121.5 | VS_Switch_Fault_SideA_1 | Bool | Value Status XC208 Switch Fault Side A Channel 1 |
 
-#### Slot 5: DQ 8x24VDC/0.5A HF (Digital Outputs)
-| Address | Tag Name | Data Type | Comment |
-| :--- | :--- | :--- | :--- |
-| %Q100.0 | BlueResetLamp_SideA_1 | Bool | Blue Reset Button Lamp Side A Channel 1 |
-| %Q100.1 | SelectorSwitchLamp_SideA_1 | Bool | Selector Switch Lamp Side A Channel 1 |
-| %Q100.2 | GreenProcessLamp_SideA_1 | Bool | Green Process Lamp Side A Channel 1 |
-| %Q100.3 | SEL1400_Reset_SideA_1 | Bool | Selectivity Module Reset button on HMI Side A Channel 1 |
-| %I11.0 | VS_BlueResetLamp_SideA_1 | Bool | Value Status Blue Reset Button Lamp Side A Channel 1 |
-| %I11.1 | VS_SelectorSwitchLamp_SideA_1 | Bool | Value Status Selector Switch Lamp Side A Channel 1 |
-| %I11.2 | VS_GreenProcessLamp_SideA_1 | Bool | Value Status Green Process Lamp Side A Channel 1 |
-| %I11.3 | VS_SEL1400_Reset_SideA_1 | Bool | Value Status Selectivity Module Reset button on HMI Side A Channel 1 |
-
-#### Slot 6: DI 8x24VDC HF (Digital Inputs)
+#### Slot 5: DI 8x24VDC HF (Digital Inputs)
 | Address | Tag Name | Data Type | Comment |
 | :--- | :--- | :--- | :--- |
 | %I110.0 | BlueResetButton_SideA_2 | Bool | Blue Reset Button on Side A Channel 2 |
@@ -47,6 +35,18 @@ This module outlines the IO tag assignments for the two Remote IO stations, ET20
 | %I111.3 | VS_PSU6200_SideA_2 | Bool | Value Status Power Supply Unit Side A Channel 2 |
 | %I111.4 | VS_YSwitch_Fault_SideA_2 | Bool | Value Status Y Switch Fault Side A Channel 2 |
 | %I111.5 | VS_Switch_Fault_SideA_2 | Bool | Value Status XC208 Switch Fault Side A Channel 2 |
+
+#### Slot 6: DQ 8x24VDC/0.5A HF (Digital Outputs)
+| Address | Tag Name | Data Type | Comment |
+| :--- | :--- | :--- | :--- |
+| %Q100.0 | BlueResetLamp_SideA_1 | Bool | Blue Reset Button Lamp Side A Channel 1 |
+| %Q100.1 | SelectorSwitchLamp_SideA_1 | Bool | Selector Switch Lamp Side A Channel 1 |
+| %Q100.2 | GreenProcessLamp_SideA_1 | Bool | Green Process Lamp Side A Channel 1 |
+| %Q100.3 | SEL1400_Reset_SideA_1 | Bool | Selectivity Module Reset button on HMI Side A Channel 1 |
+| %I11.0 | VS_BlueResetLamp_SideA_1 | Bool | Value Status Blue Reset Button Lamp Side A Channel 1 |
+| %I11.1 | VS_SelectorSwitchLamp_SideA_1 | Bool | Value Status Selector Switch Lamp Side A Channel 1 |
+| %I11.2 | VS_GreenProcessLamp_SideA_1 | Bool | Value Status Green Process Lamp Side A Channel 1 |
+| %I11.3 | VS_SEL1400_Reset_SideA_1 | Bool | Value Status Selectivity Module Reset button on HMI Side A Channel 1 |
 
 #### Slot 7: DQ 8x24VDC/0.5A HF (Digital Outputs)
 | Address | Tag Name | Data Type | Comment |
@@ -65,18 +65,32 @@ This module outlines the IO tag assignments for the two Remote IO stations, ET20
 | :--- | :--- | :--- | :--- |
 | %I130.0 | Estop_SideA | Bool | |
 
-#### Slot 9: F-DQ 4x24VDC/2A PM HF (Failsafe Outputs)
+#### Slot 9: F-DI 8x24VDC HF (Failsafe Inputs)
+*No tags configured in current reference.*
+
+#### Slot 10: F-DQ 4x24VDC/2A PM HF (Failsafe Outputs)
 | Address | Tag Name | Data Type | Comment |
 | :--- | :--- | :--- | :--- |
 | %Q270.0 | EstopLamp_SideA | Bool | |
 
-#### Slot 10: F-DI 8x24VDC HF
-*No tags configured in current reference.*
-
-#### Slot 11: F-DQ 4x24VDC/2A PM HF
+#### Slot 11: F-DQ 4x24VDC/2A PM HF (Failsafe Outputs)
 *No tags configured in current reference.*
 
 ### 4.2 ET200SP-B Tag List
+
+#### Slot 3: DI 8x24VDC HF (Digital Inputs)
+| Address | Tag Name | Data Type | Comment |
+| :--- | :--- | :--- | :--- |
+| %I37.0 | BlueResetButton_SideB_2 | Bool | Blue Reset Button on Side B Channel 2 |
+| %I37.1 | SelectorSwitch_SideB_2 | Bool | Switch Selector on Side B Channel 2 |
+| %I37.2 | SEL1400_SideB_2 | Bool | Selectivity Module Side B Channel 2 |
+| %I37.3 | PSU6200_SideB_2 | Bool | Power Supply Unit Side B Channel 2 |
+| %I37.5 | Switch_Fault_SideB_2 | Bool | XC208 Switch Fault Side B Channel 2 |
+| %I38.0 | VS_BlueResetButton_SideB_2 | Bool | Value Status Blue Reset Button on Side B Channel 2 |
+| %I38.1 | VS_SelectorSwitch_SideB_2 | Bool | Value Status of Selector Switch Side B Channel 2 |
+| %I38.2 | VS_SEL1400_SideB_2 | Bool | Value Status Selectivity Module Side B Channel 2 |
+| %I38.3 | VS_PSU6200_SideB_2 | Bool | Value Status Power Supply Unit Side B Channel 2 |
+| %I38.5 | VS_Switch_Fault_SideB_2 | Bool | Value Status XC208 Switch Fault Side B Channel 2 |
 
 #### Slot 4: DI 8x24VDC HF (Digital Inputs)
 | Address | Tag Name | Data Type | Comment |
@@ -104,21 +118,7 @@ This module outlines the IO tag assignments for the two Remote IO stations, ET20
 | %I13.2 | VS_GreenProcessLamp_SideB_1 | Bool | Value Status Green Process Lamp Side B Signal 1 |
 | %I13.3 | VS_SEL1400_Reset_SideB_1 | Bool | Value Status Selectivity Module Side B Channel 1 |
 
-#### Slot 6: DI 8x24VDC HF (Digital Inputs)
-| Address | Tag Name | Data Type | Comment |
-| :--- | :--- | :--- | :--- |
-| %I37.0 | BlueResetButton_SideB_2 | Bool | Blue Reset Button on Side B Channel 2 |
-| %I37.1 | SelectorSwitch_SideB_2 | Bool | Switch Selector on Side B Channel 2 |
-| %I37.2 | SEL1400_SideB_2 | Bool | Selectivity Module Side B Channel 2 |
-| %I37.3 | PSU6200_SideB_2 | Bool | Power Supply Unit Side B Channel 2 |
-| %I37.5 | Switch_Fault_SideB_2 | Bool | XC208 Switch Fault Side B Channel 2 |
-| %I38.0 | VS_BlueResetButton_SideB_2 | Bool | Value Status Blue Reset Button on Side B Channel 2 |
-| %I38.1 | VS_SelectorSwitch_SideB_2 | Bool | Value Status of Selector Switch Side B Channel 2 |
-| %I38.2 | VS_SEL1400_SideB_2 | Bool | Value Status Selectivity Module Side B Channel 2 |
-| %I38.3 | VS_PSU6200_SideB_2 | Bool | Value Status Power Supply Unit Side B Channel 2 |
-| %I38.5 | VS_Switch_Fault_SideB_2 | Bool | Value Status XC208 Switch Fault Side B Channel 2 |
-
-#### Slot 7: DQ 8x24VDC/0.5A HF (Digital Outputs)
+#### Slot 6: DQ 8x24VDC/0.5A HF (Digital Outputs)
 | Address | Tag Name | Data Type | Comment |
 | :--- | :--- | :--- | :--- |
 | %Q18.0 | BlueResetLamp_SideB_2 | Bool | Blue Reset Button Lamp Side Channel 2 |
@@ -130,18 +130,21 @@ This module outlines the IO tag assignments for the two Remote IO stations, ET20
 | %I14.2 | VS_GreenProcessLamp_SideB_2 | Bool | Value Status Green Process Lamp Side B Channel 2 |
 | %I14.3 | VS_SEL1400_Reset_SideB_2 | Bool | Value Status Selectivity Module Reset Side B Channel 2 |
 
-#### Slot 8: F-DI 8x24VDC HF (Failsafe Inputs)
+#### Slot 7: F-DI 8x24VDC HF (Failsafe Inputs)
 | Address | Tag Name | Data Type | Comment |
 | :--- | :--- | :--- | :--- |
 | %I39.0 | Estop_SideB | Bool | Estop Side B |
 
+#### Slot 8: F-DI 8x24VDC HF (Failsafe Inputs)
+*No tags configured in current reference.*
+
 #### Slot 9: F-DQ 4x24VDC/2A PM HF (Failsafe Outputs)
+*No tags configured in current reference.*
+
+#### Slot 10: F-DQ 4x24VDC/2A PM HF (Failsafe Outputs)
 | Address | Tag Name | Data Type | Comment |
 | :--- | :--- | :--- | :--- |
 | %Q53.0 | EstopLamp_SideB | Bool | Estop Lamp Side B kit |
 
-#### Slot 10: F-DI 8x24VDC HF
-*No tags configured in current reference.*
-
-#### Slot 11: F-DQ 4x24VDC/2A PM HF
-*No tags configured in current reference.*
+#### Slot 11: Server Module
+*End of Station*
