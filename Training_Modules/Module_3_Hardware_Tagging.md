@@ -1,8 +1,8 @@
-## Module 4: Hardware Tagging & IO Configuration
+## Module 3: Hardware Tagging & IO Configuration
 
 This module outlines the IO tag assignments for the two Remote IO stations, ET200SP-A and ET200SP-B, based on the physical hardware configuration.
 
-### 4.1 ET200SP-A Tag List
+### 3.1 ET200SP-A Tag List
 
 #### Slot 4: DI 8x24VDC HF (Digital Inputs)
 | Address | Tag Name | Data Type | Comment |
@@ -76,7 +76,7 @@ This module outlines the IO tag assignments for the two Remote IO stations, ET20
 #### Slot 11: F-DQ 4x24VDC/2A PM HF (Failsafe Outputs)
 *No tags configured in current reference.*
 
-### 4.2 ET200SP-B Tag List
+### 3.2 ET200SP-B Tag List
 
 #### Slot 3: DI 8x24VDC HF (Digital Inputs)
 | Address | Tag Name | Data Type | Comment |
