@@ -2,7 +2,18 @@
 
 This module outlines the IO tag assignments for the two Remote IO stations, ET200SP-A and ET200SP-B, based on the physical hardware configuration.
 
-### 3.1 ET200SP-A Tag List
+### 3.1 Efficient Engineering: Using Project Libraries
+To streamline engineering and avoid manual typing errors, the Tag Tables for this project have been pre-configured in the global Project Library.
+
+**Procedure:**
+1.  Open the **Global Library** (or Project Library) in TIA Portal.
+2.  Navigate to **Master Copies** > **Tag Tables**.
+3.  Locate the specific tables (e.g., `ET200SP-A_Tags`, `ET200SP-B_Tags`).
+4.  **Drag and Drop** the selected table into the **PLC Tags** folder of the S7-1518HF project tree.
+
+*Note: The detailed lists below serve as a reference for verification purposes.*
+
+### 3.2 ET200SP-A Tag List
 
 #### Slot 4: DI 8x24VDC HF (Digital Inputs)
 | Address | Tag Name | Data Type | Comment |
@@ -76,7 +87,7 @@ This module outlines the IO tag assignments for the two Remote IO stations, ET20
 #### Slot 11: F-DQ 4x24VDC/2A PM HF (Failsafe Outputs)
 *No tags configured in current reference.*
 
-### 3.2 ET200SP-B Tag List
+### 3.3 ET200SP-B Tag List
 
 #### Slot 3: DI 8x24VDC HF (Digital Inputs)
 | Address | Tag Name | Data Type | Comment |
