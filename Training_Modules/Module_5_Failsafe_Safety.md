@@ -1,16 +1,16 @@
-## Module 4: Failsafe Programming & Cross-System Safety
+## Module 5: Failsafe Programming & Cross-System Safety
 
-### 4.1 Learning Objectives
+### 5.1 Learning Objectives
 *   **Configure** Failsafe Inputs (F-DI) and Outputs (F-DQ) on R1/S2 stations.
 *   **Implement** standard Safety Logic (E-Stop, Feedback Loop) using Siemens Safety Advanced.
 *   **Establish** PROFIsafe communication across the PN/PN Coupler.
 
-### 4.2 Reference Documents
+### 5.2 Reference Documents
 *   `Application_Examples_and_Docs/Safety_and_Libraries/109995680_LSafe_FRedIO_V1_0_en.pdf`
 *   `Application_Examples_and_Docs/Safety_and_Libraries/109826840_LSafe_VoteScale_V1_0_1_en.pdf`
 *   `Application_Examples_and_Docs/Hardware_Components/pn_pn_coupler_hardware_manual_en-US_en-US.pdf`
 
-### 4.3 Safety Hardware Configuration
+### 5.3 Safety Hardware Configuration
 Before programming, the Safety Hardware must be parameterized.
 
 1.  **F-Destination Address (F-Dest-Add):** Each F-Module must have a unique DIP switch address.
@@ -18,7 +18,7 @@ Before programming, the Safety Hardware must be parameterized.
 2.  **F-Monitoring Time:** Ensure the default (150ms) is sufficient for the Redundant Switchover.
     *   *Recommendation:* Increase to **350ms or higher** for devices that might experience redundancy delays, to prevent inadvertent "Communication Faults" during CPU swap.
 
-### 4.4 Programming E-Stop Logic
+### 5.4 Programming E-Stop Logic
 1.  **Safety Administration:** Enable "F-Capability" in the S7-1518HF Properties. Set a Safety Password.
 2.  **Safety Runtime Group:** TIA Portal creates a "Main_Safety_RTG" OB (OB123). Place all safety logic here.
 3.  **ESTOP1 Block:**
@@ -27,7 +27,7 @@ Before programming, the Safety Hardware must be parameterized.
     *   **Output:** Map to the global "Safe_Enable" tag or F-DQ channels.
     *   **Ack:** Map to a standard HMI/Button reset tag for acknowledgment.
 
-### 4.5 PN/PN Coupler Safety (F-Link)
+### 5.5 PN/PN Coupler Safety (F-Link)
 To pass safety signals (e.g., "Global E-Stop") to the Subordinate PLC:
 
 1.  **Transfer Area:** In the PN/PN Coupler settings, create a F-CD (F-Configuration Data) or F-MS (Module) transfer area, not just standard IO.

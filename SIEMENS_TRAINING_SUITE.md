@@ -13,8 +13,8 @@ Welcome to the Siemens S7-1518HF Training & Integration Suite. This documentatio
 ### [Module 3: Commissioning & Validation Plan](Training_Modules/Module_3_Commissioning_Validation.md)
 *   **Topics:** Validation Strategy, Failover Tests (Domain 1/2/3), Bumpless Transfer Verification.
 
-### [Module 4: Failsafe Programming & Cross-System Safety](Training_Modules/Module_4_Failsafe_Safety.md)
-*   **Topics:** Failsafe IO Config (F-Monitoring Time), E-Stop Logic (ESTOP1), Safety Communication (SENDDP/RCVDP).
-
-### [Module 5: Hardware Tagging & IO Configuration](Training_Modules/Module_5_Hardware_Tagging.md)
+### [Module 4: Hardware Tagging & IO Configuration](Training_Modules/Module_4_Hardware_Tagging.md)
 *   **Topics:** IO Tag Placeholders for ET200SP-A and ET200SP-B (Slots 4-11).
+
+### [Module 5: Failsafe Programming & Cross-System Safety](Training_Modules/Module_5_Failsafe_Safety.md)
+*   **Topics:** Failsafe IO Config (F-Monitoring Time), E-Stop Logic (ESTOP1), Safety Communication (SENDDP/RCVDP).

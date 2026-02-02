@@ -1,8 +1,8 @@
-## Module 5: Hardware Tagging & IO Configuration
+## Module 4: Hardware Tagging & IO Configuration
 
 This module outlines the IO tag placeholders for the two Remote IO stations, ET200SP-A and ET200SP-B.
 
-### 5.1 ET200SP-A Tag List
+### 4.1 ET200SP-A Tag List
 **Rack 0 Configuration:**
 *   Slot 4: DI 8x24VDC HF
 *   Slot 5: DI 8x24VDC HF
@@ -101,7 +101,7 @@ This module outlines the IO tag placeholders for the two Remote IO stations, ET2
 | 2 | %Q11.2 | ET200SP_A_FDQ_Slot11_Ch2 | Bool | Placeholder |
 | 3 | %Q11.3 | ET200SP_A_FDQ_Slot11_Ch3 | Bool | Placeholder |
 
-### 5.2 ET200SP-B Tag List
+### 4.2 ET200SP-B Tag List
 **Rack 0 Configuration:** Identical to ET200SP-A.
 
 #### Slot 4: DI 8x24VDC HF (Digital Inputs)
