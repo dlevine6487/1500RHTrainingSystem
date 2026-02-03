@@ -16,5 +16,8 @@ Welcome to the Siemens S7-1518HF Training & Integration Suite. This documentatio
 ### [Module 4: Failsafe Programming & Cross-System Safety](Training_Modules/Module_4_Failsafe_Safety.md)
 *   **Topics:** Failsafe IO Config (F-Monitoring Time), E-Stop Logic (ESTOP1), Safety Communication (SENDDP/RCVDP).
 
-### [Module 5: Commissioning & Validation Plan](Training_Modules/Module_5_Commissioning_Validation.md)
+### [Module 5: High Availability IO with LRedIO](Training_Modules/Module_5_LRedIO_HighAvail.md)
+*   **Topics:** 1oo2 Voting for Digital Inputs, Dual Drive for Digital Outputs, LRedIO Library Configuration.
+
+### [Module 6: Commissioning & Validation Plan](Training_Modules/Module_6_Commissioning_Validation.md)
 *   **Topics:** Validation Strategy, Failover Tests (Domain 1/2/3), Bumpless Transfer Verification.
