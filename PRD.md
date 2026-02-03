@@ -22,6 +22,9 @@ The **Siemens S7-1518HF Training Suite** is a comprehensive documentation and in
 
 #### 3.2 Device Inventory
 The system comprises the following key hardware components:
+*   **S7-1518HF-4 PN:** The primary and backup high-availability controllers responsible for system logic and redundancy management.
+*   **PSU6200:** The 24V DC Power Supply Units providing reliable power to the system components.
+*   **SEL1400:** Selectivity modules used for 24V DC channel protection and detailed power diagnostics.
 *   **Switch-A & Switch-B (Scalance XC208):** Managed Profinet switches forming the physical infrastructure of the R1 Backbone rings.
 *   **YSwitch-A (Scalance XF204-DNA):** The Y-Switch providing the link between the high-availability R1 backbone and the standard S2 ring.
 *   **IE PB Link HA-A:** A High-Availability gateway used to integrate Profibus DP devices into the redundant Profinet network transparently.
