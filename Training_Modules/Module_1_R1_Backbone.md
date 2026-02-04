@@ -58,8 +58,19 @@ An R1 Station uses an **IM 155-6 PN R1** interface module. This module essential
 **The Formula:**
 `Watchdog Time = Update Time x Accepted Update Cycles`
 
-#### Automated Configuration: PN Watchdog Add-In
-For efficient and error-free configuration, use the **PN Watchdog Add-In**. This tool automates the calculation and application of watchdog timers.
+#### Manual Calculation Method (Primary)
+1.  **Navigate:** Go to the R1 Station > **Profinet Interface** > **Advanced Options** > **Real time settings** > **IO Cycle**.
+2.  **Update Time:** Set a stable update time (e.g., **2.0 ms** or **4.0 ms**). Faster is not always better in redundant systems.
+3.  **Watchdog (Accepted Update Cycles):**
+    *   Standard default is often 3 cycles (2ms x 3 = 6ms). **This is too short for redundancy.**
+    *   **Requirement:** Watchdog must be > System Switchover Time (approx 300ms).
+    *   **Calculation:** 300ms / 2ms = 150 cycles.
+    *   **Action:** Change "Accepted update cycles without IO data" to a manual value, e.g., **150** or **200**.
+    *   *Target:* Ensure the calculated Watchdog Time is **> 300ms** (e.g., 400ms to be safe).
+4.  **Verify:** Check the "Watchdog time" field updates to reflect the new calculation.
+
+#### Automated Configuration: PN Watchdog Add-In (Alternative)
+For efficient and error-free configuration, you can use the **PN Watchdog Add-In**. This tool automates the calculation and application of watchdog timers.
 
 **1. Installation:**
 *   Locate the Add-In file (`.addin`) provided in the documentation package.
@@ -79,17 +90,6 @@ For efficient and error-free configuration, use the **PN Watchdog Add-In**. This
 *   Right-click the selection > **Add-Ins** > **PN Watchdog**.
 *   In the dialog, set the desired Watchdog Time (e.g., **400ms** to safely exceed the 300ms switchover).
 *   Click **Run** or **Apply** to update the devices.
-
-#### Manual Calculation Method (Alternative)
-1.  **Navigate:** Go to the R1 Station > **Profinet Interface** > **Advanced Options** > **Real time settings** > **IO Cycle**.
-2.  **Update Time:** Set a stable update time (e.g., **2.0 ms** or **4.0 ms**). Faster is not always better in redundant systems.
-3.  **Watchdog (Accepted Update Cycles):**
-    *   Standard default is often 3 cycles (2ms x 3 = 6ms). **This is too short for redundancy.**
-    *   **Requirement:** Watchdog must be > System Switchover Time (approx 300ms).
-    *   **Calculation:** 300ms / 2ms = 150 cycles.
-    *   **Action:** Change "Accepted update cycles without IO data" to a manual value, e.g., **150** or **200**.
-    *   *Target:* Ensure the calculated Watchdog Time is **> 300ms** (e.g., 400ms to be safe).
-4.  **Verify:** Check the "Watchdog time" field updates to reflect the new calculation.
 
 ### 1.7 Device Commissioning: Assigning Names & IPs
 Once the hardware configuration is complete, the physical devices must be commissioned using TIA Portal's **Online Access** features to match the project configuration.
