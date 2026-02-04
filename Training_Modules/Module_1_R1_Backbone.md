@@ -10,6 +10,7 @@
 *   `Application_Examples_and_Docs/System_Architecture_and_Manuals/s71500rh_manual_en-US_en-US_v21.pdf`
 *   `Application_Examples_and_Docs/Redundancy_and_MRP/109739614_MRP_DOKU_V10_en.pdf`
 *   `Application_Examples_and_Docs/Hardware_Components/et200sp_im_155_6_pn_r1_en-US_en-US.pdf`
+*   `Application_Examples_and_Docs/Safety_and_Libraries/109769093_S7_1500RH_AddIn_DOC_V1_4_en.pdf`
 
 ### 1.3 Architecture: The R1 Split Backbone
 The foundation of the system is the **R1 Topology**. This consists of two physically isolated Profinet rings (Domains 1 & 2) that are logically unified by the R1 IO devices.
@@ -57,7 +58,29 @@ An R1 Station uses an **IM 155-6 PN R1** interface module. This module essential
 **The Formula:**
 `Watchdog Time = Update Time x Accepted Update Cycles`
 
-**Configuration Strategy:**
+#### Automated Configuration: PN Watchdog Add-In
+For efficient and error-free configuration, use the **PN Watchdog Add-In**. This tool automates the calculation and application of watchdog timers.
+
+**1. Installation:**
+*   Locate the Add-In file (`.addin`) provided in the documentation package.
+*   Copy the file to the TIA Portal Add-Ins directory:
+    *   **Path:** `C:\Program Files\Siemens\Automation\Portal V[Version]\AddIns\`
+    *   *Alternative:* `Documents\Siemens\Automation\Portal V[Version]\AddIns\`
+
+**2. Activation in TIA Portal:**
+*   Open the **Add-ins** task card (right-side pane).
+*   Expand the list to find **PN Watchdog**.
+*   Right-click the Add-In and select **Activate**.
+*   *Note:* Ensure "Mass data operations" are enabled if prompted.
+
+**3. Usage:**
+*   Open **Network View**.
+*   Select the target IO Stations (e.g., ET200SP-A, Switch-A, Switch-B).
+*   Right-click the selection > **Add-Ins** > **PN Watchdog**.
+*   In the dialog, set the desired Watchdog Time (e.g., **400ms** to safely exceed the 300ms switchover).
+*   Click **Run** or **Apply** to update the devices.
+
+#### Manual Calculation Method (Alternative)
 1.  **Navigate:** Go to the R1 Station > **Profinet Interface** > **Advanced Options** > **Real time settings** > **IO Cycle**.
 2.  **Update Time:** Set a stable update time (e.g., **2.0 ms** or **4.0 ms**). Faster is not always better in redundant systems.
 3.  **Watchdog (Accepted Update Cycles):**
