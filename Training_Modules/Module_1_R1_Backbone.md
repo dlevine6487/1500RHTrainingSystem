@@ -115,3 +115,36 @@ Once the hardware configuration is complete, the physical devices must be commis
 *   [ ] Switch-A (Left Backbone) - 192.168.0.10
 *   [ ] Switch-B (Right Backbone) - 192.168.0.6
 *   [ ] ET200SP-A (R1 Station) - 192.168.0.4 / 192.168.0.5
+
+### 1.8 Security & Downloading Configuration
+Proper security settings and operational modes are required to successfully download the hardware configuration to the physical devices.
+
+#### Switch Security: Changing Default Credentials
+The SCALANCE XC208 switches ship with default credentials that are flagged as insecure. During the initial download or first login, you will be prompted to change them.
+
+1.  **Default Login:**
+    *   Username: `admin`
+    *   Password: `admin`
+2.  **Required Action:**
+    *   Access the switch via Web Based Management (WBM) using a browser at its IP (e.g., `https://192.168.0.10`).
+    *   When prompted, change the password to the project standard.
+    *   **Project Standard Credentials:**
+        *   Username: `SiemensAdmin`
+        *   Password: `Siemens1!`
+3.  **TIA Portal User Management:** ensure these credentials are also updated in the TIA Portal project under the switch properties (Security / Users) so TIA can automatically log in during downloads.
+
+#### Downloading to S7-1500R/H System
+Downloading hardware changes to a redundant system has stricter requirements than a standard PLC.
+
+*   **PLC State:** The S7-1500R/H system must often be in **STOP** mode to accept significant Hardware Configuration changes (such as modifying the PROFINET Topology, adding R1 devices, or changing IP addresses).
+*   **Procedure:**
+    1.  Select the **System** folder (PLC_1) in the Project Tree.
+    2.  Click **Download to device**.
+    3.  **Load Preview:** TIA Portal will perform a consistency check.
+    4.  **Stop Requirement:** If the "Load preview" window indicates that the "Module must be stopped", you must check the "Stop all" or "Stop module" box.
+    5.  **Synchronization:** After the download completes and the Primary PLC restarts, it will automatically synchronize the Backup PLC.
+
+**Troubleshooting:** If the download fails with "Loading of hardware configuration failed", verify that:
+*   You are not trying to download while the system is in active Redundant (RUN-Redundant) mode for changes that require a restart.
+*   The device names and IPs match exactly.
+*   The "Protection" level in the PLC properties allows loading.
