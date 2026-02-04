@@ -67,3 +67,29 @@ An R1 Station uses an **IM 155-6 PN R1** interface module. This module essential
     *   **Action:** Change "Accepted update cycles without IO data" to a manual value, e.g., **150** or **200**.
     *   *Target:* Ensure the calculated Watchdog Time is **> 300ms** (e.g., 400ms to be safe).
 4.  **Verify:** Check the "Watchdog time" field updates to reflect the new calculation.
+
+### 1.7 Device Commissioning: Assigning Names & IPs
+Once the hardware configuration is complete, the physical devices must be commissioned using TIA Portal's **Online Access** features to match the project configuration.
+
+**Procedure:**
+1.  **Open Online Access:** Expand the "Online access" node in the project tree.
+2.  **Select Interface:** Choose your network adapter (e.g., "PLCSIM" or your physical Ethernet adapter).
+3.  **Scan:** Click **Update accessible devices**.
+4.  **Commission Each Device:** For every device found (PLC-A, PLC-B, Switch-A, Switch-B, ET200SP-A, ET200SP-B):
+    *   Expand the device entry.
+    *   Double-click **Online & diagnostics**.
+    *   **Assign Name:** Navigate to **Functions** > **Assign PROFINET name**.
+        *   Select the matching name from the project configuration (e.g., `Switch-A`).
+        *   Click **Assign name**.
+        *   *Crucial:* The name must match exactly. This is how the Redundant Controllers identify the device.
+    *   **Assign IP:** Navigate to **Functions** > **Assign IP address**.
+        *   Enter the IP address defined in the hardware configuration.
+        *   Click **Assign IP address**.
+
+**Checklist:**
+*   [ ] PLC-A (Primary)
+*   [ ] PLC-B (Backup)
+*   [ ] Switch-A (Left Backbone)
+*   [ ] Switch-B (Right Backbone)
+*   [ ] ET200SP-A (R1 Station)
+*   [ ] ET200SP-B (R1 Station)
