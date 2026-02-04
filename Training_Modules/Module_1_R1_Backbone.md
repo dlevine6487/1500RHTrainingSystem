@@ -75,7 +75,7 @@ Once the hardware configuration is complete, the physical devices must be commis
 1.  **Open Online Access:** Expand the "Online access" node in the project tree.
 2.  **Select Interface:** Choose your network adapter (e.g., "PLCSIM" or your physical Ethernet adapter).
 3.  **Scan:** Click **Update accessible devices**.
-4.  **Commission Each Device:** For every device found (PLC-A, PLC-B, Switch-A, Switch-B, ET200SP-A, ET200SP-B):
+4.  **Commission Each Device:** For every device found (PLC-A, PLC-B, Switch-A, Switch-B, ET200SP-A):
     *   Expand the device entry.
     *   Double-click **Online & diagnostics**.
     *   **Assign Name:** Navigate to **Functions** > **Assign PROFINET name**.
@@ -87,9 +87,8 @@ Once the hardware configuration is complete, the physical devices must be commis
         *   Click **Assign IP address**.
 
 **Checklist:**
-*   [ ] PLC-A (Primary)
-*   [ ] PLC-B (Backup)
-*   [ ] Switch-A (Left Backbone)
-*   [ ] Switch-B (Right Backbone)
-*   [ ] ET200SP-A (R1 Station)
-*   [ ] ET200SP-B (R1 Station)
+*   [ ] PLC-A (Primary) - 192.168.0.1
+*   [ ] PLC-B (Backup) - 192.168.0.2
+*   [ ] Switch-A (Left Backbone) - 192.168.0.10
+*   [ ] Switch-B (Right Backbone) - 192.168.0.6
+*   [ ] ET200SP-A (R1 Station) - 192.168.0.4 / 192.168.0.5
