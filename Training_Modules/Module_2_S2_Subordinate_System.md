@@ -13,8 +13,8 @@
 ### 2.3 The Y-Switch (XF204-DNA) Setup
 The Y-Switch is the gateway. It connects as a client to the backbones and a manager to the Blue Ring.
 1.  **Upstream (Ports 1 & 2):**
-    *   Connect Port 1 to `switch-backbone-a` -> **Client** of `mrpdomain-1`.
-    *   Connect Port 2 to `switch-backbone-b` -> **Client** of `mrpdomain-2`.
+    *   Connect Port 1 to `Switch-A` -> **Client** of `mrpdomain-1`.
+    *   Connect Port 2 to `Switch-B` -> **Client** of `mrpdomain-2`.
 2.  **Downstream (Ports 3 & 4):**
     *   Create **MRP Domain 3**.
     *   Set Role to **Manager (Auto)**.

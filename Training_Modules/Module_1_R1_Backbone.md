@@ -22,7 +22,7 @@ The XC208 switches act as the entry points for the R1 IO. They must be configure
 
 **Procedure for XC208-A (Side A):**
 1.  **Add Device:** Drag `SCALANCE XC208` from the Hardware Catalog to Network View.
-2.  **Assign Name:** Set Profinet Name to `switch-backbone-a`.
+2.  **Assign Name:** Set Profinet Name to `Switch-A`.
 3.  **MRP Configuration:**
     *   Navigate to **Profinet Interface** > **Advanced Options** > **Media Redundancy**.
     *   **Domain:** Select `mrpdomain-1`.
@@ -31,7 +31,7 @@ The XC208 switches act as the entry points for the R1 IO. They must be configure
 4.  **Port Configuration:** Ensure the port facing the R1 IO Station (e.g., P5) is *not* a ring port but is active.
 
 **Procedure for XC208-B (Side B):**
-1.  **Add Device:** Add second XC208. Name: `switch-backbone-b`.
+1.  **Add Device:** Add second XC208. Name: `Switch-B`.
 2.  **MRP Configuration:**
     *   **Domain:** Select `mrpdomain-2`.
     *   **Role:** **Client**.
@@ -47,8 +47,8 @@ An R1 Station uses an **IM 155-6 PN R1** interface module. This module essential
     *   Click the "Not Assigned" link on the device.
     *   Select **PLC_1 (System)** (This assigns it to the Redundant Pair, not just one PLC).
 3.  **Topology Connection:**
-    *   **Port 1 (Interface 1):** Connect to `switch-backbone-a` (Side A).
-    *   **Port 2 (Interface 2):** Connect to `switch-backbone-b` (Side B).
+    *   **Port 1 (Interface 1):** Connect to `Switch-A` (Side A).
+    *   **Port 2 (Interface 2):** Connect to `Switch-B` (Side B).
     *   *Result:* TIA Portal recognizes this as a valid R1 connection spanning the two redundant subnets.
 
 ### 1.6 Critical Configuration: Watchdog & Update Time

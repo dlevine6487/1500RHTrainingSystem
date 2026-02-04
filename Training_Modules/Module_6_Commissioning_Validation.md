@@ -11,7 +11,7 @@ Validate the independence of the three domains and the bumpless behavior.
 *   **Expectation:** R1 Station continues operation via Interface 2 (Side B).
 
 ### 6.4 Test B: Domain 2 Failure (Backbone B)
-*   **Action:** Power off `switch-backbone-b`.
+*   **Action:** Power off `Switch-B`.
 *   **Expectation:** R1 Station switches to Interface 1 (Side A). DNA switches upstream to Port 1.
 
 ### 6.5 Test C: Primary CPU Failure (Bumpless Check)
