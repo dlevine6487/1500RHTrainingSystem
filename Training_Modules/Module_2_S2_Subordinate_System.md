@@ -14,6 +14,9 @@ Building a reliable S2 subordinate system off an R1 backbone requires strict adh
 2.  **Synchronization Link:** High-quality fiber-optic interconnects linking the primary and backup CPUs via dedicated sync modules, ensuring real-time project state synchronization.
 3.  **The Y-Switch:** The SCALANCE XF204-DNA must be used. Standard managed switches cannot perform the DNA packet duplication/deduplication required for S2 integration.
 4.  **S2 Capable IO Devices:** Subordinate devices like the ET200SP-B interface module and the PN/PN Coupler must explicitly support System Redundancy (S2) profiles.
+5.  **C-PLUG (Configuration Plug):** Required for specific components, particularly the IE/PB Link HA.
+
+>   **Pro-Tip:** The C-PLUG module is mandatory for operation of the IE/PB Link HA. Ensure it is firmly inserted into the slot behind the blue cover on the front of the physical device before attempting commissioning.
 
 ### 2.3 Network Topology
 The subordinate architecture relies on an isolated ring network securely bridged to the main backbone.
