@@ -30,13 +30,18 @@ The subordinate architecture relies on an isolated ring network securely bridged
 ### 2.4 Software Configuration: The Y-Switch (XF204-DNA) Setup
 The Y-Switch requires meticulous parameterization within TIA Portal. Follow these exact steps to ensure a stable integration.
 
-**1. Physical Uplinks (Standard Ethernet)**
+**1. S2 Device Assignment (Multi-assignment)**
+The Y-Switch must be logically assigned to the redundant controller system.
+*   In the **Network view**, select the "Not assigned" text link on the Y-Switch PROFINET interface.
+*   Select the redundant system (e.g., `PLC_1`) from the list. The text will change to **Multi assigned**, confirming the S2 relation to both primary and backup CPUs.
+
+**2. Physical Uplinks (Standard Ethernet)**
 Configure the physical connections bridging to the primary controllers.
 *   **Port 1:** Connect to the Side A backbone (`Switch-A`).
 *   **Port 2:** Connect to the Side B backbone (`Switch-B`).
 >   **Pro-Tip:** Ensure these ports are configured strictly as standard PROFINET uplinks. They must **NOT** be assigned as ring ports for `mrpdomain-1` or `mrpdomain-2`.
 
-**2. Assigning the Role of Y-Switch as Manager (MRP Domain 3)**
+**3. Assigning the Role of Y-Switch as Manager (MRP Domain 3)**
 The Y-Switch must manage the subordinate S2 ring traffic.
 
 1.  Navigate to the Y-Switch's properties in TIA Portal: `PROFINET interface [X1] -> Advanced options -> Media redundancy`.
@@ -48,7 +53,7 @@ The Y-Switch must manage the subordinate S2 ring traffic.
 
 ![Y-Switch Media Redundancy Configuration](images/yswitch_mrp_config.png)
 
-**3. Module Parameters: Enabling DNA Redundancy**
+**4. Module Parameters: Enabling DNA Redundancy**
 Activate the core Dual Network Access routing functionality.
 
 1.  Navigate in the Y-Switch properties to `PROFINET interface [X1] -> Module parameters`.
@@ -59,7 +64,7 @@ Activate the core Dual Network Access routing functionality.
 
 >   **Pro-Tip:** Without this checked, the switch will not duplicate/deduplicate packets across the R1 backbone, breaking S2 integration.
 
-**4. Layer 2 Ring Redundancy Settings**
+**5. Layer 2 Ring Redundancy Settings**
 Configure the specific Layer 2 behavior for the managed ring.
 
 1.  From the Module parameters view, click the green arrow next to the "DNA redundancy" checkbox to navigate directly to the specific module settings. Alternatively, locate the module in the device view and open its properties: `Layer 2 -> Ring Redundancy -> Ring`.
@@ -69,7 +74,7 @@ Configure the specific Layer 2 behavior for the managed ring.
 
 ![Y-Switch Layer 2 Ring Redundancy Settings](images/yswitch_ring_redundancy.png)
 
-**5. Topology View Configuration**
+**6. Topology View Configuration**
 Accurately mapping the physical cable connections within TIA Portal is essential for network diagnostics and topology-based PROFINET device replacement.
 
 1.  Navigate to the **Topology view** tab in the *Devices & networks* workspace.
@@ -82,7 +87,7 @@ Accurately mapping the physical cable connections within TIA Portal is essential
 
 >   **Pro-Tip:** The Topology view must perfectly mirror reality. If a cable is plugged into physical port `P1.1` but drawn to port `P1.2` in TIA Portal, you will encounter persistent topology errors during hardware compilation and download.
 
-**6. Device Commissioning and Hardware Download**
+**7. Device Commissioning and Hardware Download**
 Before the final hardware configuration can be downloaded, the physical Y-Switch must be commissioned and its default security credentials updated, mirroring the procedure utilized for the primary backbone switches.
 
 1.  **Assign PROFINET Name and IP:**
@@ -106,12 +111,17 @@ Before the final hardware configuration can be downloaded, the physical Y-Switch
 ### 2.5 Software Configuration: The IE PB Link HA - A Setup
 Progressing further into the S2 MRP chain hosted by the Y-Switch, the `IEPBLinkHA-A` must be configured to bridge the PROFINET ring to downstream PROFIBUS DP networks.
 
-**1. Network Assignment and Topology**
+**1. S2 Device Assignment (Multi-assignment)**
+Just like the Y-Switch, the gateway must be associated with the redundant controllers.
+*   In the **Network view**, select the "Not assigned" text link on the PROFINET interface of the IE/PB Link HA.
+*   Assign it to the redundant system (`PLC_1`). The designation will change to **Multi assigned**.
+
+**2. Network Assignment and Topology**
 Ensure the module is logically placed and assigned to the correct networks.
 *   **PROFINET Network:** Ensure the device is connected to the subordinate "Blue Ring" managed by the Y-Switch (`mrpdomain-3`).
 *   **PROFIBUS Network:** In the Network view, ensure the DP interface (`X2`) is assigned to the correct PROFIBUS subnet (e.g., `PROFIBUS_A`).
 
-**2. Network Gateway Parameterization**
+**3. Network Gateway Parameterization**
 The gateway mode must be explicitly set to support the S7-1500R/H redundant architecture.
 1.  Navigate to the properties of the IE/PB Link HA module: `General -> Network gateway`.
 2.  Select the specific operating mode: **Network gateway as PROFINET IO proxy / S7-1500R/H (local download required)**.
@@ -120,7 +130,7 @@ The gateway mode must be explicitly set to support the S7-1500R/H redundant arch
 
 >   **Pro-Tip:** The designation "(local download required)" is critical. It signifies that configuring this gateway parameter requires an independent, direct hardware download to the IE/PB Link HA itself, not just a system-wide download from the PLC.
 
-**3. Media Redundancy (MRP) Role Configuration**
+**4. Media Redundancy (MRP) Role Configuration**
 The IE/PB Link HA must be configured as a client within the subordinate ring.
 1.  Navigate to the PROFINET interface properties of the module: `PROFINET interface [X1] -> Advanced options -> Media redundancy`.
 2.  **MRP domain:** Set this explicitly to `mrpdomain-3` to align with the Y-Switch.
@@ -131,14 +141,14 @@ The IE/PB Link HA must be configured as a client within the subordinate ring.
 
 >   **Pro-Tip:** If `mrpdomain-3` does not appear as an option in the MRP domain dropdown, you must manually create it. Click the **Domain settings** button located below the dropdowns, add `mrpdomain-3` to the project's MRP configurations, and assign it to the correct subnet before returning to this screen.
 
-**4. Commissioning: Device Naming and IP Assignment**
+**5. Commissioning: Device Naming and IP Assignment**
 Just like standard PROFINET devices, the IE/PB Link HA requires proper identification on the network before it can communicate with the controllers.
 1.  Navigate to **Online access** in the project tree, select your network adapter, and click **Update accessible devices**.
 2.  Locate the unconfigured IE/PB Link HA, expand it, and double-click **Online & diagnostics**.
 3.  Under **Functions -> Assign PROFINET name**, assign the exact device name configured in your TIA Portal project (e.g., `IEPBLinkHA-A`).
 4.  Under **Functions -> Assign IP address**, assign the configured IP address matching the 192.168.0.x schema.
 
-**5. Local Hardware Download**
+**6. Local Hardware Download**
 Because of the specific gateway mode selected, the configuration of the IE/PB Link HA and connected PROFIBUS devices must be loaded directly into the gateway module itself, independent of the PLC.
 
 1.  **Independent Download:**
