@@ -148,6 +148,8 @@ Because of the specific gateway mode selected, the configuration of the IE/PB Li
 
 >   **Pro-Tip (Order of Operations):** Always perform load operations in a strict sequence after modifying the IE/PB Link HA: **First** download the configuration to the R/H-CPUs, **then** download to the IE/PB Link HA. This guarantees the configuration data is identical on both sides of the bridge.
 
+>   **Pro-Tip (RUN/STOP Mode):** The IE/PB Link HA maintains its own independent RUN and STOP operating modes. While the initial download should automatically prompt the device to transition to RUN, it may occasionally remain stuck in STOP mode. If this occurs, you can manually transition it: Navigate to the device via *Online access*, open **Online & diagnostics**, and use the controls under the **Online tools** section to manually switch the device from STOP to RUN mode.
+
 ### 2.6 Critical Configuration: Watchdog Tuning (S2 Devices)
 S2 devices connected via the Y-Switch must survive the primary-to-backup switchover latency (approx 300ms) without generating a communication fault.
 
