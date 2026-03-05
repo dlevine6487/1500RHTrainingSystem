@@ -100,7 +100,36 @@ Before the final hardware configuration can be downloaded, the physical Y-Switch
     *   Select the Y-Switch module (`YSwitch-A`) in the Device view.
     *   Click **Download to device** -> **Hardware configuration** to finalize the integration.
 
-### 2.5 Critical Configuration: Watchdog Tuning (S2 Devices)
+### 2.5 Software Configuration: The IE PB Link HA - A Setup
+Progressing further into the S2 MRP chain hosted by the Y-Switch, the `IEPBLinkHA-A` must be configured to bridge the PROFINET ring to downstream PROFIBUS DP networks.
+
+**1. Network Assignment and Topology**
+Ensure the module is logically placed and assigned to the correct networks.
+*   **PROFINET Network:** Ensure the device is connected to the subordinate "Blue Ring" managed by the Y-Switch (`mrpdomain-3`).
+*   **PROFIBUS Network:** In the Network view, ensure the DP interface (`X2`) is assigned to the correct PROFIBUS subnet (e.g., `PROFIBUS_A`).
+
+**2. Network Gateway Parameterization**
+The gateway mode must be explicitly set to support the S7-1500R/H redundant architecture.
+1.  Navigate to the properties of the IE/PB Link HA module: `General -> Network gateway`.
+2.  Select the specific operating mode: **Network gateway as PROFINET IO proxy / S7-1500R/H (local download required)**.
+
+![IE PB Link HA Network Gateway Configuration](images/iepblinkha_network_gateway.png)
+
+>   **Pro-Tip:** The designation "(local download required)" is critical. It signifies that configuring this gateway parameter requires an independent, direct hardware download to the IE/PB Link HA itself, not just a system-wide download from the PLC.
+
+**3. Commissioning: Device Naming and IP Assignment**
+Just like standard PROFINET devices, the IE/PB Link HA requires proper identification on the network before it can communicate with the controllers.
+1.  Navigate to **Online access** in the project tree, select your network adapter, and click **Update accessible devices**.
+2.  Locate the unconfigured IE/PB Link HA, expand it, and double-click **Online & diagnostics**.
+3.  Under **Functions -> Assign PROFINET name**, assign the exact device name configured in your TIA Portal project (e.g., `IEPBLinkHA-A`).
+4.  Under **Functions -> Assign IP address**, assign the configured IP address matching the 192.168.0.x schema.
+
+**4. Local Hardware Download**
+Because of the specific gateway mode selected, perform a dedicated hardware download.
+1.  Select the IE/PB Link HA module (`IEPBLinkHA-A`) in the Device or Network view.
+2.  Click **Download to device** -> **Hardware configuration**.
+
+### 2.6 Critical Configuration: Watchdog Tuning (S2 Devices)
 S2 devices connected via the Y-Switch must survive the primary-to-backup switchover latency (approx 300ms) without generating a communication fault.
 
 *   **Requirement:** The Watchdog Timer must exceed > 300ms.
@@ -111,7 +140,7 @@ S2 devices connected via the Y-Switch must survive the primary-to-backup switcho
     *   *Calculation:* `Update Time * Cycles > 300ms`. (e.g., 4ms update time * 100 cycles = 400ms watchdog).
 >   **Pro-Tip:** Default system calculations often leave watchdog timers around 6ms. This is the leading cause of S2 devices dropping during a switchover event. Always manually tune scan time parameters for HA systems.
 
-### 2.6 Pairing & Synchronization: Achieving RUN-Redundant State
+### 2.7 Pairing & Synchronization: Achieving RUN-Redundant State
 Commissioning requires careful synchronization to transition from a stopped state to a fully redundant operational mode.
 
 1.  **Initial Hardware Download:** With the primary CPU (`PLC_1A`) in `STOP` mode, download the complete, compiled hardware configuration from TIA Portal. This is required for major topology changes like adding a Y-Switch.
@@ -120,7 +149,7 @@ Commissioning requires careful synchronization to transition from a stopped stat
 4.  **Backup CPU Synchronization:** Power on the backup CPU (`PLC_1B`). It automatically detects the primary controller via the fiber-optic sync link.
 5.  **Achieving the State:** The backup CPU will autonomously transfer the active project data, sync the process image, and transition seamlessly into the `RUN-Redundant` state, indicated by solid green LEDs on both controllers.
 
-### 2.7 Troubleshooting Common Integration Pitfalls
+### 2.8 Troubleshooting Common Integration Pitfalls
 Systematic diagnosis is required when integration fails.
 
 1.  **Symptom: Sync Error - Backup CPU remains in STOP mode.**
