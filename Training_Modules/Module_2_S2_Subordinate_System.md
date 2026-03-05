@@ -129,6 +129,8 @@ The IE/PB Link HA must be configured as a client within the subordinate ring.
 
 ![IE PB Link HA Media Redundancy Configuration](images/iepblinkha_mrp_config.png)
 
+>   **Pro-Tip:** If `mrpdomain-3` does not appear as an option in the MRP domain dropdown, you must manually create it. Click the **Domain settings** button located below the dropdowns, add `mrpdomain-3` to the project's MRP configurations, and assign it to the correct subnet before returning to this screen.
+
 **4. Commissioning: Device Naming and IP Assignment**
 Just like standard PROFINET devices, the IE/PB Link HA requires proper identification on the network before it can communicate with the controllers.
 1.  Navigate to **Online access** in the project tree, select your network adapter, and click **Update accessible devices**.
