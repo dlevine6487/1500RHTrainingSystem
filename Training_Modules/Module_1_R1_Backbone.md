@@ -44,9 +44,10 @@ An R1 Station uses an **IM 155-6 PN R1** interface module. This module essential
 1.  **Hardware Selection:**
     *   Catalog: `Distributed I/O` > `ET 200SP` > `Interface Modules` > `Profinet` > `IM 155-6 PN R1`.
     *   Drag into Network View.
-2.  **Controller Assignment:**
-    *   Click the "Not Assigned" link on the device.
-    *   Select **PLC_1 (System)** (This assigns it to the Redundant Pair, not just one PLC).
+2.  **Device Assignment (Multi-assignment):**
+    *   All R1 and critical backbone devices (such as `Switch-A`, `Switch-B`, and `ET200SP-A`) must be logically assigned to the redundant controller system.
+    *   In the **Network view**, click the "Not Assigned" link on the device's PROFINET interface.
+    *   Select the redundant system (e.g., `PLC_1`). The text will change to **Multi assigned**, confirming its connection to both **PLC1** and **PLC2**.
 3.  **Topology Connection:**
     *   **Port 1 (Interface 1):** Connect to `Switch-A` (Side A).
     *   **Port 2 (Interface 2):** Connect to `Switch-B` (Side B).
