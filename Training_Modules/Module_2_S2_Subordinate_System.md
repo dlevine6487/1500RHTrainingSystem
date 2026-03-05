@@ -33,7 +33,7 @@ The Y-Switch requires meticulous parameterization within TIA Portal. Follow thes
 **1. S2 Device Assignment (Multi-assignment)**
 The Y-Switch must be logically assigned to the redundant controller system.
 *   In the **Network view**, select the "Not assigned" text link on the Y-Switch PROFINET interface.
-*   Select the redundant system (e.g., `PLC_1`) from the list. The text will change to **Multi assigned**, confirming the S2 relation to both primary and backup CPUs.
+*   Select the redundant system (e.g., `PLC_1`) from the list. The text will change to **Multi assigned**, explicitly confirming its S2 connection to both **PLC1** and **PLC2**.
 
 **2. Physical Uplinks (Standard Ethernet)**
 Configure the physical connections bridging to the primary controllers.
@@ -114,7 +114,7 @@ Progressing further into the S2 MRP chain hosted by the Y-Switch, the `IEPBLinkH
 **1. S2 Device Assignment (Multi-assignment)**
 Just like the Y-Switch, the gateway must be associated with the redundant controllers.
 *   In the **Network view**, select the "Not assigned" text link on the PROFINET interface of the IE/PB Link HA.
-*   Assign it to the redundant system (`PLC_1`). The designation will change to **Multi assigned**.
+*   Assign it to the redundant system (`PLC_1`). The designation will change to **Multi assigned**, explicitly confirming its connection to both **PLC1** and **PLC2**.
 
 **2. Network Assignment and Topology**
 Ensure the module is logically placed and assigned to the correct networks.
