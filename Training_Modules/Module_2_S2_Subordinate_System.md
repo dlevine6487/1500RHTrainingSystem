@@ -117,14 +117,23 @@ The gateway mode must be explicitly set to support the S7-1500R/H redundant arch
 
 >   **Pro-Tip:** The designation "(local download required)" is critical. It signifies that configuring this gateway parameter requires an independent, direct hardware download to the IE/PB Link HA itself, not just a system-wide download from the PLC.
 
-**3. Commissioning: Device Naming and IP Assignment**
+**3. Media Redundancy (MRP) Role Configuration**
+The IE/PB Link HA must be configured as a client within the subordinate ring.
+1.  Navigate to the PROFINET interface properties of the module: `PROFINET interface [X1] -> Advanced options -> Media redundancy`.
+2.  **MRP domain:** Set this explicitly to `mrpdomain-3` to align with the Y-Switch.
+3.  **Media redundancy role:** Select **Client** from the dropdown list.
+4.  Confirm the proper Ring port 1 and Ring port 2 assignments reflect physical connections.
+
+![IE PB Link HA Media Redundancy Configuration](images/iepblinkha_mrp_config.png)
+
+**4. Commissioning: Device Naming and IP Assignment**
 Just like standard PROFINET devices, the IE/PB Link HA requires proper identification on the network before it can communicate with the controllers.
 1.  Navigate to **Online access** in the project tree, select your network adapter, and click **Update accessible devices**.
 2.  Locate the unconfigured IE/PB Link HA, expand it, and double-click **Online & diagnostics**.
 3.  Under **Functions -> Assign PROFINET name**, assign the exact device name configured in your TIA Portal project (e.g., `IEPBLinkHA-A`).
 4.  Under **Functions -> Assign IP address**, assign the configured IP address matching the 192.168.0.x schema.
 
-**4. Local Hardware Download**
+**5. Local Hardware Download**
 Because of the specific gateway mode selected, perform a dedicated hardware download.
 1.  Select the IE/PB Link HA module (`IEPBLinkHA-A`) in the Device or Network view.
 2.  Click **Download to device** -> **Hardware configuration**.
@@ -160,4 +169,4 @@ Systematic diagnosis is required when integration fails.
     *   **Solution:** Review step 2.4(4). Ensure the physical cables match the logical `P1.1` and `P2.1` assignments. Use TIA Portal Topology view to confirm expected vs. actual connections.
 3.  **Symptom: Redundancy Loss - Subordinate devices drop when testing primary failover.**
     *   **Pitfall:** S2 Watchdog timers are too aggressive (scan time < failover latency).
-    *   **Solution:** Recalculate and apply Watchdog Timers ensuring they significantly exceed the 300ms threshold (Review Section 2.5).
+    *   **Solution:** Recalculate and apply Watchdog Timers ensuring they significantly exceed the 300ms threshold (Review Section 2.6).
