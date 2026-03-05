@@ -43,12 +43,17 @@ The Y-Switch must manage the subordinate S2 ring traffic.
     *   **Ring port 1:** Set to `SCALANCE interface_1 [X1]\Port_1_1 [R0/S1/X1 P1R]`.
     *   **Ring port 2:** Set to `SCALANCE interface_1 [X1]\Port_2_1 [R0/S2/X1 P1R]`.
 
+![Y-Switch Media Redundancy Configuration](images/yswitch_mrp_config.png)
+
 **3. Module Parameters: Enabling DNA Redundancy**
 Activate the core Dual Network Access routing functionality.
 
 1.  Navigate in the Y-Switch properties to `PROFINET interface [X1] -> Module parameters`.
 2.  Locate the **Module parameters** block.
 3.  Check the box for **DNA redundancy**.
+
+![Y-Switch Module Parameters - DNA Redundancy](images/yswitch_dna_param.png)
+
 >   **Pro-Tip:** Without this checked, the switch will not duplicate/deduplicate packets across the R1 backbone, breaking S2 integration.
 
 **4. Layer 2 Ring Redundancy Settings**
@@ -59,6 +64,8 @@ Configure the specific Layer 2 behavior for the managed ring.
 3.  Set the **Ring redundancy mode** to `MRP Manager`.
 4.  Define the **Ring ports** utilizing the dropdown menus: Select `P1.1` and `P2.1` to correspond with the physical S2 ring connections.
 
+![Y-Switch Layer 2 Ring Redundancy Settings](images/yswitch_ring_redundancy.png)
+
 **5. Topology View Configuration**
 Accurately mapping the physical cable connections within TIA Portal is essential for network diagnostics and topology-based PROFINET device replacement.
 
@@ -68,7 +75,30 @@ Accurately mapping the physical cable connections within TIA Portal is essential
 4.  **Uplinks (Blue Cables in Diagram):** Ensure the cables from `Switch-A` and `Switch-B` are "landed" on the specific ports configured as standard uplinks (e.g., `X1 P1` and `X1 P2` on the base module).
 5.  **Subordinate Ring (Red Cables in Diagram):** Ensure the cables forming the Blue Ring are landed directly on the designated MRP Ring Ports defined in the previous step (e.g., ports `P1.1` and `P2.1` on the specific switch module).
 
+![Y-Switch Topology View Configuration](images/yswitch_topology.png)
+
 >   **Pro-Tip:** The Topology view must perfectly mirror reality. If a cable is plugged into physical port `P1.1` but drawn to port `P1.2` in TIA Portal, you will encounter persistent topology errors during hardware compilation and download.
+
+**6. Device Commissioning and Hardware Download**
+Before the final hardware configuration can be downloaded, the physical Y-Switch must be commissioned and its default security credentials updated, mirroring the procedure utilized for the primary backbone switches.
+
+1.  **Assign PROFINET Name and IP:**
+    *   Navigate to **Online access** in the project tree, select your network adapter, and click **Update accessible devices**.
+    *   Locate the unconfigured XF204-DNA switch, expand it, and double-click **Online & diagnostics**.
+    *   Under **Functions -> Assign PROFINET name**, assign the exact name configured in your project (e.g., `YSwitch-A`).
+    *   Under **Functions -> Assign IP address**, assign the configured IP address.
+2.  **Change Default Credentials (WBM):**
+    *   Access the switch's Web Based Management (WBM) using a browser pointed to the newly assigned IP address.
+    *   Log in using the factory default credentials (Username: `admin`, Password: `admin`).
+    *   When prompted, strictly adhere to the project security standard by updating the credentials to:
+        *   **Username:** `SiemensAdmin`
+        *   **Password:** `Siemens1!`
+3.  **Update TIA Portal User Management:**
+    *   Return to the Y-Switch properties in TIA Portal.
+    *   Navigate to `Security -> Users` and update the project configuration to match these new credentials, ensuring TIA Portal can authenticate automatically during the download process.
+4.  **Download to Device:**
+    *   Select the Y-Switch module (`YSwitch-A`) in the Device view.
+    *   Click **Download to device** -> **Hardware configuration** to finalize the integration.
 
 ### 2.5 Critical Configuration: Watchdog Tuning (S2 Devices)
 S2 devices connected via the Y-Switch must survive the primary-to-backup switchover latency (approx 300ms) without generating a communication fault.
