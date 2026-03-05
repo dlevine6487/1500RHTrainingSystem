@@ -134,9 +134,16 @@ Just like standard PROFINET devices, the IE/PB Link HA requires proper identific
 4.  Under **Functions -> Assign IP address**, assign the configured IP address matching the 192.168.0.x schema.
 
 **5. Local Hardware Download**
-Because of the specific gateway mode selected, perform a dedicated hardware download.
-1.  Select the IE/PB Link HA module (`IEPBLinkHA-A`) in the Device or Network view.
-2.  Click **Download to device** -> **Hardware configuration**.
+Because of the specific gateway mode selected, the configuration of the IE/PB Link HA and connected PROFIBUS devices must be loaded directly into the gateway module itself, independent of the PLC.
+
+1.  **Independent Download:**
+    *   Select the IE/PB Link HA module (`IEPBLinkHA-A`) in the Network view.
+    *   Click **Download to device** -> **Hardware configuration**. Only the gateway and DP master system are loaded.
+2.  **Simultaneous Download (Alternative):**
+    *   Select *both* the IE/PB Link HA and the S7-1500R/H system in the Network view.
+    *   Click **Download to device**. TIA Portal will load the configurations into the devices sequentially.
+
+>   **Pro-Tip (Order of Operations):** Always perform load operations in a strict sequence after modifying the IE/PB Link HA: **First** download the configuration to the R/H-CPUs, **then** download to the IE/PB Link HA. This guarantees the configuration data is identical on both sides of the bridge.
 
 ### 2.6 Critical Configuration: Watchdog Tuning (S2 Devices)
 S2 devices connected via the Y-Switch must survive the primary-to-backup switchover latency (approx 300ms) without generating a communication fault.
@@ -170,3 +177,9 @@ Systematic diagnosis is required when integration fails.
 3.  **Symptom: Redundancy Loss - Subordinate devices drop when testing primary failover.**
     *   **Pitfall:** S2 Watchdog timers are too aggressive (scan time < failover latency).
     *   **Solution:** Recalculate and apply Watchdog Timers ensuring they significantly exceed the 300ms threshold (Review Section 2.6).
+4.  **Symptom: Diagnostics Alarm "Wrong configuration, the configuration cannot be applied" in R/H-CPU.**
+    *   **Pitfall:** The IE/PB Link HA and the R/H-CPU have mismatched configuration data because they were not downloaded in the correct sequence.
+    *   **Solution:** Re-download the project. Download strictly to the R/H-CPUs first, then to the IE/PB Link HA.
+5.  **Symptom: Generic Diagnostics Alarm "Diagnostics available and is being processed" on IE/PB Link HA.**
+    *   **Pitfall:** TIA Portal cannot translate the specific module error natively.
+    *   **Solution:** Utilize the NCM S7 diagnostics tool. Navigate to *Online & diagnostics* for the IE/PB Link HA. Click the "Start special diagnostics" button to launch NCM S7 and extract the specific error text directly from the module's buffer.
