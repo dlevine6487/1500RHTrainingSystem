@@ -128,16 +128,30 @@ The SCALANCE XC208 switches ship with default credentials that are flagged as in
         *   Password: `Siemens1!`
 3.  **TIA Portal User Management:** ensure these credentials are also updated in the TIA Portal project under the switch properties (Security / Users) so TIA can automatically log in during downloads.
 
-#### Downloading to S7-1500R/H System
-Downloading hardware changes to a redundant system has stricter requirements than a standard PLC.
+#### Downloading Hardware Configuration (System Stop)
+Downloading significant hardware changes to a redundant system (such as modifying the PROFINET Topology, adding R1 devices, or changing IP addresses) has stricter requirements than a standard PLC.
 
-*   **PLC State:** The S7-1500R/H system must often be in **STOP** mode to accept significant Hardware Configuration changes (such as modifying the PROFINET Topology, adding R1 devices, or changing IP addresses).
+*   **Requirement:** The S7-1500R/H system must often be transitioned to **STOP** mode to accept significant hardware configuration changes.
 *   **Procedure:**
     1.  Select the **System** folder (PLC_1) in the Project Tree.
     2.  Click **Download to device**.
     3.  **Load Preview:** TIA Portal will perform a consistency check.
     4.  **Stop Requirement:** If the "Load preview" window indicates that the "Module must be stopped", you must check the "Stop all" or "Stop module" box.
     5.  **Synchronization:** After the download completes and the Primary PLC restarts, it will automatically synchronize the Backup PLC.
+
+#### Downloading a User Program to the Primary CPU (Online Change)
+You can download a changed user program (software) into the Primary CPU while it remains in the RUN operating state, ensuring no standstill of the active plant process.
+
+*   **Requirement:** The Primary CPU is in the **RUN** operating state.
+
+**Procedure:**
+1.  **Isolate Primary:** Switch the Backup CPU to the **STOP** operating state.
+    *   *Result:* The S7-1500R/H system transitions from the RUN-Redundant system state to the RUN-Solo system state. The Primary CPU maintains control.
+2.  **Download Changes:** Select the Primary CPU in the project tree and execute **Download to device** -> **Software (only changes)**.
+3.  **Restore Redundancy:** Switch the Backup CPU back to the **RUN** operating state.
+    *   *Result:* The Primary CPU synchronizes the modified user program with the Backup CPU during SYNCUP. The system then automatically switches back to the RUN-Redundant system status.
+
+>   **Pro-Tip (RUN-Solo State):** Always manually place the Backup CPU into STOP before downloading software changes to the Primary. Attempting to download software to an active RUN-Redundant pair without this transition can lead to unpredictable synchronization faults or system halts.
 
 #### Downloading Project Data to the Backup CPU
 By default, project data is downloaded to the Primary CPU. However, you can deliberately download to the Backup CPU. This strategy allows the primary CPU to continue controlling the active process during the download. Once complete, you force a switchover, making the newly updated Backup CPU the new Primary.
