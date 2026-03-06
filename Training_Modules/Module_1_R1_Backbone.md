@@ -145,6 +145,27 @@ Downloading hardware changes to a redundant system has stricter requirements tha
     4.  **Stop Requirement:** If the "Load preview" window indicates that the "Module must be stopped", you must check the "Stop all" or "Stop module" box.
     5.  **Synchronization:** After the download completes and the Primary PLC restarts, it will automatically synchronize the Backup PLC.
 
+#### Downloading Project Data to the Backup CPU
+By default, project data is downloaded to the Primary CPU. However, you can deliberately download to the Backup CPU. This strategy allows the primary CPU to continue controlling the active process during the download. Once complete, you force a switchover, making the newly updated Backup CPU the new Primary.
+
+*   **Requirement:** The Backup CPU must be in the **STOP** operating state.
+
+**Procedure:**
+1.  **Select System:** Right-click the S7-1500R/H system folder in the project tree.
+2.  **Initiate Download:** Select **Download to backup CPU** -> **Hardware and software (only changes)**. The backup CPU is automatically selected as the target in the *Extended download* dialog.
+3.  **Configure Interface:** Select your subnet, PG/PC interface adapter, and physical interface connection.
+4.  **Connect:** Click **Start search**. Ensure the *Choose target device* table accurately reflects the CPUs and their roles (Backup CPU should be selected by default).
+5.  **Execute:** Click **Load** and review the *Results of loading* dialog.
+
+>   **Pro-Tip (Retentive Data):** Exercise caution when downloading to the Backup CPU. If your project relies heavily on retentive data, the Backup CPU will boot utilizing potentially outdated retentive state data.
+
+**Executing the Switchover:**
+After a successful download to the Backup CPU, you must swap roles to activate the new configuration.
+1.  Transition the **Primary CPU** to the **STOP** operating state.
+2.  Transition the updated **Backup CPU** to the **RUN** operating state.
+    *   *Result:* The former backup CPU becomes the new Primary CPU and takes over control of the process in the **RUN-Solo** state.
+3.  Once the old primary is updated and brought back online, the system will execute a SYNCUP and return to the stable **RUN-Redundant** state.
+
 **Troubleshooting:** If the download fails with "Loading of hardware configuration failed", verify that:
 *   You are not trying to download while the system is in active Redundant (RUN-Redundant) mode for changes that require a restart.
 *   The device names and IPs match exactly.
