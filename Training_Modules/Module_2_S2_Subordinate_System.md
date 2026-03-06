@@ -162,7 +162,36 @@ Because of the specific gateway mode selected, the configuration of the IE/PB Li
 
 >   **Pro-Tip (RUN/STOP Mode):** The IE/PB Link HA maintains its own independent RUN and STOP operating modes. While the initial download should automatically prompt the device to transition to RUN, it may occasionally remain stuck in STOP mode. If this occurs, you can manually transition it: Navigate to the device via *Online access*, open **Online & diagnostics**, and use the controls under the **Online tools** section to manually switch the device from STOP to RUN mode.
 
-### 2.6 Critical Configuration: Watchdog Tuning (S2 Devices)
+### 2.6 Software Configuration: Remaining S2 Devices (ET200SP-B & PN/PN Coupler)
+The final physical devices forming the S2 "Blue Ring" are the `ET200SP-B` interface module and the `PNPNCoupler-B`. These devices must be integrated into the redundant architecture and configured as MRP clients within Domain 3.
+
+**1. S2 Device Assignment (Multi-assignment)**
+Both devices must be explicitly assigned to the redundant S7-1500RH controllers.
+*   In the **Network view**, locate the `ET200SP-B` and `PNPNCoupler-B` modules.
+*   Click the "Not assigned" link on the PROFINET interface of each device.
+*   Select the redundant system (`PLC_1`). Ensure the text updates to **Multi assigned**, confirming connection to both **PLC1** and **PLC2**.
+
+**2. Network Topology and MRP Configuration**
+Both devices must act as MRP clients to ensure the Y-Switch can manage the ring loop.
+1.  Navigate to the properties of each device: `PROFINET interface [X1] -> Advanced options -> Media redundancy`.
+2.  **MRP domain:** Set strictly to `mrpdomain-3` (manually adding it via **Domain settings** if it doesn't appear in the dropdown).
+3.  **Media redundancy role:** Select **Client** for both devices.
+4.  **Topology Mapping:** In the TIA Portal **Topology view**, draw the physical ring connections from the IE/PB Link HA down through the ET200SP-B and PN/PN Coupler, looping back to the Y-Switch. The drawn ports must match the physical wiring perfectly.
+
+### 2.7 S2 Domain 3 Commissioning Checklist
+Once all logical configurations (Multi-assignment, Topology, MRP, Gateway parameters) are finalized, the entire "Blue Ring" system must be physically commissioned before attempting the system download. Utilize TIA Portal's **Online Access -> Update accessible devices -> Online & diagnostics** to assign the following values.
+
+**S2 Subordinate Network (192.168.0.x Subnet)**
+*   [ ] **YSwitch-A** (SCALANCE XF204-DNA)
+    *   *IP Address:* 192.168.0.7 *(Example)*
+*   [ ] **IEPBLinkHA-A** (IE/PB Link HA Gateway)
+    *   *IP Address:* 192.168.0.8 *(Example)*
+*   [ ] **ET200SP-B** (Remote IO Interface Module)
+    *   *IP Address:* 192.168.0.9 *(Example)*
+*   [ ] **PNPNCoupler-B** (PN/PN Coupler X1 Interface)
+    *   *IP Address:* 192.168.0.11 *(Example)*
+
+### 2.8 Critical Configuration: Watchdog Tuning (S2 Devices)
 S2 devices connected via the Y-Switch must survive the primary-to-backup switchover latency (approx 300ms) without generating a communication fault.
 
 *   **Requirement:** The Watchdog Timer must exceed > 300ms.
@@ -173,7 +202,7 @@ S2 devices connected via the Y-Switch must survive the primary-to-backup switcho
     *   *Calculation:* `Update Time * Cycles > 300ms`. (e.g., 4ms update time * 100 cycles = 400ms watchdog).
 >   **Pro-Tip:** Default system calculations often leave watchdog timers around 6ms. This is the leading cause of S2 devices dropping during a switchover event. Always manually tune scan time parameters for HA systems.
 
-### 2.7 Pairing & Synchronization: Achieving RUN-Redundant State
+### 2.9 Pairing & Synchronization: Achieving RUN-Redundant State
 Commissioning requires careful synchronization to transition from a stopped state to a fully redundant operational mode.
 
 1.  **Initial Hardware Download:** With the primary CPU (`PLC_1A`) in `STOP` mode, download the complete, compiled hardware configuration from TIA Portal. This is required for major topology changes like adding a Y-Switch.
@@ -182,7 +211,7 @@ Commissioning requires careful synchronization to transition from a stopped stat
 4.  **Backup CPU Synchronization:** Power on the backup CPU (`PLC_1B`). It automatically detects the primary controller via the fiber-optic sync link.
 5.  **Achieving the State:** The backup CPU will autonomously transfer the active project data, sync the process image, and transition seamlessly into the `RUN-Redundant` state, indicated by solid green LEDs on both controllers.
 
-### 2.8 Troubleshooting Common Integration Pitfalls
+### 2.10 Troubleshooting Common Integration Pitfalls
 Systematic diagnosis is required when integration fails.
 
 1.  **Symptom: Sync Error - Backup CPU remains in STOP mode.**
@@ -201,7 +230,7 @@ Systematic diagnosis is required when integration fails.
     *   **Pitfall:** TIA Portal cannot translate the specific module error natively.
     *   **Solution:** Utilize the NCM S7 diagnostics tool. Navigate to *Online & diagnostics* for the IE/PB Link HA. Click the "Start special diagnostics" button to launch NCM S7 and extract the specific error text directly from the module's buffer.
 
-### 2.9 Reference Documents
+### 2.11 Reference Documents
 *   `Application_Examples_and_Docs/System_Architecture_and_Manuals/s71500rh_manual_en-US_en-US_v21.pdf`
 *   `Application_Examples_and_Docs/Hardware_Components/scalance_x200_dna_operating_instructions_en-US_en-US.pdf`
 *   `Application_Examples_and_Docs/Hardware_Components/ie_pb_link_ha_operating_instructions_en-US_en-US.pdf`
