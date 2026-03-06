@@ -6,19 +6,13 @@
 *   **Configure** Profinet Watchdog Timers to ensure bumpless transfer during redundancy switchover.
 *   **Implement** correct MRP Client settings for distribution switches.
 
-### 1.2 Reference Documents
-*   `Application_Examples_and_Docs/System_Architecture_and_Manuals/s71500rh_manual_en-US_en-US_v21.pdf`
-*   `Application_Examples_and_Docs/Redundancy_and_MRP/109739614_MRP_DOKU_V10_en.pdf`
-*   `Application_Examples_and_Docs/Hardware_Components/et200sp_im_155_6_pn_r1_en-US_en-US.pdf`
-*   `Application_Examples_and_Docs/Safety_and_Libraries/109769093_S7_1500RH_AddIn_DOC_V1_4_en.pdf`
-
-### 1.3 Architecture: The R1 Split Backbone
+### 1.2 Architecture: The R1 Split Backbone
 The foundation of the system is the **R1 Topology**. This consists of two physically isolated Profinet rings (Domains 1 & 2) that are logically unified by the R1 IO devices.
 *   **Side A (Left):** PLC A + XC208-A + Left Interface of R1 IM. (Manages **MRP Domain 1**).
 *   **Side B (Right):** PLC B + XC208-B + Right Interface of R1 IM. (Manages **MRP Domain 2**).
 *   *Note:* There is no copper link between XC208-A and XC208-B.
 
-### 1.4 Step-by-Step: XC208 Switch Configuration
+### 1.3 Step-by-Step: XC208 Switch Configuration
 The XC208 switches act as the entry points for the R1 IO. They must be configured as **MRP Clients** to allow the PLCs (Managers) to control the ring.
 
 **Procedure for XC208-A (Side A):**
@@ -38,7 +32,7 @@ The XC208 switches act as the entry points for the R1 IO. They must be configure
     *   **Role:** **Client**.
     *   **Ring Ports:** Select ports forming ring with PLC B.
 
-### 1.5 Step-by-Step: R1 Remote IO Setup (ET 200SP)
+### 1.4 Step-by-Step: R1 Remote IO Setup (ET 200SP)
 An R1 Station uses an **IM 155-6 PN R1** interface module. This module essentially contains two separate network adapters in one head unit.
 
 1.  **Hardware Selection:**
@@ -53,7 +47,7 @@ An R1 Station uses an **IM 155-6 PN R1** interface module. This module essential
     *   **Port 2 (Interface 2):** Connect to `Switch-B` (Side B).
     *   *Result:* TIA Portal recognizes this as a valid R1 connection spanning the two redundant subnets.
 
-### 1.6 Critical Configuration: Watchdog & Update Time
+### 1.5 Critical Configuration: Watchdog & Update Time
 **The Challenge:** When a Primary PLC fails, it takes time (up to 300ms) for the Backup PLC to assume control and send new data. If the IO Station's "Watchdog" timer expires *before* the Backup takes over, the outputs will turn off (flicker) before coming back on. This breaks "Bumpless Transfer".
 
 **The Formula:**
@@ -92,7 +86,7 @@ For efficient and error-free configuration, you can use the **PN Watchdog Add-In
 *   In the dialog, set the desired Watchdog Time (e.g., **400ms** to safely exceed the 300ms switchover).
 *   Click **Run** or **Apply** to update the devices.
 
-### 1.7 Device Commissioning: Assigning Names & IPs
+### 1.6 Device Commissioning: Assigning Names & IPs
 Once the hardware configuration is complete, the physical devices must be commissioned using TIA Portal's **Online Access** features to match the project configuration.
 
 **Procedure:**
@@ -117,7 +111,7 @@ Once the hardware configuration is complete, the physical devices must be commis
 *   [ ] Switch-B (Right Backbone) - 192.168.0.6
 *   [ ] ET200SP-A (R1 Station) - 192.168.0.4 / 192.168.0.5
 
-### 1.8 Security & Downloading Configuration
+### 1.7 Security & Downloading Configuration
 Proper security settings and operational modes are required to successfully download the hardware configuration to the physical devices.
 
 #### Switch Security: Changing Default Credentials
@@ -170,3 +164,9 @@ After a successful download to the Backup CPU, you must swap roles to activate t
 *   You are not trying to download while the system is in active Redundant (RUN-Redundant) mode for changes that require a restart.
 *   The device names and IPs match exactly.
 *   The "Protection" level in the PLC properties allows loading.
+
+### 1.8 Reference Documents
+*   `Application_Examples_and_Docs/System_Architecture_and_Manuals/s71500rh_manual_en-US_en-US_v21.pdf`
+*   `Application_Examples_and_Docs/Redundancy_and_MRP/109739614_MRP_DOKU_V10_en.pdf`
+*   `Application_Examples_and_Docs/Hardware_Components/et200sp_im_155_6_pn_r1_en-US_en-US.pdf`
+*   `Application_Examples_and_Docs/Safety_and_Libraries/109769093_S7_1500RH_AddIn_DOC_V1_4_en.pdf`

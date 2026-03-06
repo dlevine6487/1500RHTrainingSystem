@@ -200,3 +200,8 @@ Systematic diagnosis is required when integration fails.
 5.  **Symptom: Generic Diagnostics Alarm "Diagnostics available and is being processed" on IE/PB Link HA.**
     *   **Pitfall:** TIA Portal cannot translate the specific module error natively.
     *   **Solution:** Utilize the NCM S7 diagnostics tool. Navigate to *Online & diagnostics* for the IE/PB Link HA. Click the "Start special diagnostics" button to launch NCM S7 and extract the specific error text directly from the module's buffer.
+
+### 2.9 Reference Documents
+*   `Application_Examples_and_Docs/System_Architecture_and_Manuals/s71500rh_manual_en-US_en-US_v21.pdf`
+*   `Application_Examples_and_Docs/Hardware_Components/scalance_x200_dna_operating_instructions_en-US_en-US.pdf`
+*   `Application_Examples_and_Docs/Hardware_Components/ie_pb_link_ha_operating_instructions_en-US_en-US.pdf`
