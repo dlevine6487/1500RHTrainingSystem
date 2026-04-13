@@ -14,8 +14,8 @@
 ### 4.3 Safety Hardware Configuration
 Before programming, the Safety Hardware must be parameterized.
 
-1.  **F-Destination Address (F-Dest-Add):** Each F-Module must have a unique DIP switch address.
-    *   *Tip:* Set the address in TIA Portal first, then physically match the DIP switches on the module.
+1.  **F-Destination Address (F-Dest-Add):** Each F-Module must have a unique F-Destination address assigned to it.
+    *   *Pro-Tip:* These IO modules do not use physical DIP switches. The F-Destination address is assigned electronically using TIA Portal. Ensure that the address assigned in the hardware configuration is uniquely and correctly downloaded to each individual safety device.
 2.  **F-Monitoring Time:** Ensure the default (150ms) is sufficient for the Redundant Switchover.
     *   *Recommendation:* Increase to **350ms or higher** for devices that might experience redundancy delays, to prevent inadvertent "Communication Faults" during CPU swap.
 
@@ -37,19 +37,25 @@ To pass safety signals (e.g., "Global E-Stop") to the Subordinate PLC:
     *   **System B (Receiver):** Use `RCVDP` to unpack them.
 3.  **F_Dest_Add:** The PN/PN Coupler transfer area acts as a "Virtual F-Module". It needs a unique F-Address that must match on both sides (Sender and Receiver).
 
-### 4.6 Commissioning PLC-C (Subordinate System)
-PLC-C acts as an independent subordinate safety controller that exchanges safety data with the 1518HF System via the PN/PN Coupler.
+### 4.6 Commissioning the S2 PN/PN Coupler for Subordinate Safety (PLC-C)
+PLC-C acts as an independent subordinate safety controller that exchanges critical safety data (such as Global E-Stops or Safety Interlocks) with the S7-1518HF system. This communication relies on configuring the PN/PN Coupler as an S2 PROFINET device to ensure uninterrupted failsafe data exchange even during a redundant switchover.
 
-1.  **Network Integration (X2 Side):**
+1.  **S2 Network Integration (X2 Side):**
     *   PLC-C connects to the **X2** interface of the PN/PN Coupler.
-    *   Assign a valid IP address and Device Name to the X2 interface in PLC-C's hardware configuration.
+    *   In TIA Portal's Network View, explicitly multi-assign the PN/PN Coupler to both PLC-C (if acting as a redundancy partner on its end) or ensure standard S2 configuration if PLC-C is a standalone controller interacting with the redundant 1518HF.
+    *   Assign the appropriate PROFINET Name and IP Address to the X2 interface in PLC-C's hardware configuration.
 
-2.  **Mirror Configuration:**
-    *   The Transfer Areas defined in PLC-C must be the **mirror image** of the 1518HF (X1) configuration.
-    *   *Example:* If 1518HF (X1) has "IN: 6 Bytes / OUT: 12 Bytes", PLC-C (X2) must be configured with "OUT: 6 Bytes / IN: 12 Bytes".
-    *   Ensure the **F-Destination Address** for the F-CD/F-MS module in PLC-C matches the address set in the 1518HF project exactly.
+2.  **Failsafe Transfer Area Mirroring:**
+    *   The Transfer Areas on the X2 side must be a perfect **mirror image** of the X1 side (1518HF).
+    *   *Example:* If the 1518HF (X1) defines an F-MS module as "IN: 6 Bytes / OUT: 12 Bytes", PLC-C (X2) must be configured with the complementary "OUT: 6 Bytes / IN: 12 Bytes" F-MS module.
+    *   **F-Destination Address Sync:** The PN/PN Coupler transfer areas act as "Virtual F-Modules". The F-Destination Address assigned to the mirrored transfer area in PLC-C *must exactly match* the F-Destination Address set in the 1518HF project for the corresponding X1 transfer area.
+    *   *Pro-Tip:* Pay strict attention to the F-Monitoring time on these transfer areas. Given this is an S2 connection, the F-Monitoring Time must account for network propagation and potential redundancy switchover times (typically > 350ms).
 
-3.  **Safety Logic (PLC-C):**
-    *   **Receive Global E-Stop:** Use the `RCVDP` instruction to receive the safety telegram from the 1518HF.
-    *   **Local Reaction:** Map the `RCVDP` output to PLC-C's local safety function (e.g., `ESTOP1` input or drive STO) to ensure the subordinate system stops when the main system trips.
-    *   **Send Status:** Use `SENDDP` to send local status (e.g., "PLC-C E-Stop OK") back to the 1518HF.
+3.  **Safety Logic Exchange (SENDDP / RCVDP):**
+    *   **Receiving Data (from 1518HF):** In PLC-C's `Main_Safety_RTG`, utilize the `RCVDP` instruction to unpack the PROFIsafe telegram sent by the 1518HF. Connect the LADDR input to the hardware identifier of the incoming transfer area.
+    *   **Local Reaction:** Map the extracted safety signals (e.g., "Global E-Stop Active") to PLC-C's local safety logic, driving local Safe Torque Off (STO) commands or contactors.
+    *   **Transmitting Data (to 1518HF):** Use the `SENDDP` instruction to package PLC-C's local safety status (e.g., "PLC-C Zone OK", "Local E-Stop Status") into the outgoing transfer area, feeding back to the 1518HF system.
+
+4.  **Hardware Compilation & Download:**
+    *   Compile the safety program and hardware configuration.
+    *   Ensure PLC-C is placed into STOP mode during the initial safety hardware download, then transition back to RUN mode and verify the PN/PN Coupler establishes standard and safety communication without SF/BF faults.
