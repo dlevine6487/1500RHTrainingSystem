@@ -48,6 +48,13 @@ PLC-C acts as an independent subordinate safety controller that exchanges critic
 2.  **Failsafe Transfer Area Mirroring:**
     *   The Transfer Areas on the X2 side must be a perfect **mirror image** of the X1 side (1518HF).
     *   *Example:* If the 1518HF (X1) defines an F-MS module as "IN: 6 Bytes / OUT: 12 Bytes", PLC-C (X2) must be configured with the complementary "OUT: 6 Bytes / IN: 12 Bytes" F-MS module.
+
+        *1518HF (X1) Interface Transfer Mapping:*
+        ![PN/PN Coupler X1 Transfer Mapping](images/Mapping_IO_PN_Coupler.png)
+
+        *PLC-C (X2) Interface Transfer Mapping (Mirrored):*
+        ![PN/PN Coupler X2 Mirrored Transfer Mapping](images/Mapping_IO_PN_Coupler_2.png)
+
     *   **F-Destination Address Sync:** The PN/PN Coupler transfer areas act as "Virtual F-Modules". The F-Destination Address assigned to the mirrored transfer area in PLC-C *must exactly match* the F-Destination Address set in the 1518HF project for the corresponding X1 transfer area.
     *   *Pro-Tip:* Pay strict attention to the F-Monitoring time on these transfer areas. Given this is an S2 connection, the F-Monitoring Time must account for network propagation and potential redundancy switchover times (typically > 350ms).
 
