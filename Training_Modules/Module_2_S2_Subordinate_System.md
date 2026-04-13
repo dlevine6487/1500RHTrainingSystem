@@ -101,10 +101,7 @@ Before the final hardware configuration can be downloaded, the physical Y-Switch
     *   When prompted, strictly adhere to the project security standard by updating the credentials to:
         *   **Username:** `SiemensAdmin`
         *   **Password:** `Siemens1!`
-3.  **Update TIA Portal User Management:**
-    *   Return to the Y-Switch properties in TIA Portal.
-    *   Navigate to `Security -> Users` and update the project configuration to match these new credentials, ensuring TIA Portal can authenticate automatically during the download process.
-4.  **Download to Device:**
+3.  **Download to Device:**
     *   Select the Y-Switch module (`YSwitch-A`) in the Device view.
     *   Click **Download to device** -> **Hardware configuration** to finalize the integration.
 
