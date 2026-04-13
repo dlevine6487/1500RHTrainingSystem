@@ -52,14 +52,21 @@ PLC-C acts as an independent subordinate safety controller that exchanges critic
     *   *Pro-Tip:* Pay strict attention to the F-Monitoring time on these transfer areas. Given this is an S2 connection, the F-Monitoring Time must account for network propagation and potential redundancy switchover times (typically > 350ms).
 
 3.  **Safety Logic Exchange (SENDDP / RCVDP):**
-    *   **Receiving Data (from 1518HF):** In PLC-C's `Main_Safety_RTG`, utilize the `RCVDP` instruction to unpack the PROFIsafe telegram sent by the 1518HF. Connect the LADDR input to the hardware identifier of the incoming transfer area.
+    *   **1518HF Perspective (Primary System):** The 1518HF acts as the primary safety controller. It uses `RCVDP` to receive the subordinate status and `SENDDP` to transmit the global safety state (e.g., Global E-Stop) to the PN/PN Coupler.
 
+        *Example: 1518HF `RCVDP` Instruction receiving PLC-C status:*
         ![RCVDP Instruction Configuration](images/RCVDP.png)
 
-    *   **Local Reaction:** Map the extracted safety signals (e.g., "Global E-Stop Active") to PLC-C's local safety logic, driving local Safe Torque Off (STO) commands or contactors.
-    *   **Transmitting Data (to 1518HF):** Use the `SENDDP` instruction to package PLC-C's local safety status (e.g., "PLC-C Zone OK", "Local E-Stop Status") into the outgoing transfer area, feeding back to the 1518HF system.
-
+        *Example: 1518HF `SENDDP` Instruction transmitting Global E-Stop to PLC-C:*
         ![SENDDP Instruction Configuration](images/SNDP.png)
+
+    *   **PLC-C Perspective (Subordinate System):** In PLC-C's `Main_Safety_RTG`, the logic is mirrored. Utilize the `RCVDP` instruction to unpack the PROFIsafe telegram sent by the 1518HF. Map these extracted signals (e.g., "Global E-Stop Active") to PLC-C's local safety logic, driving local Safe Torque Off (STO) commands. Then, use the `SENDDP` instruction to package PLC-C's local safety status (e.g., "PLC-C Zone OK") back into the outgoing transfer area for the 1518HF to read.
+
+        *Example: PLC-C `RCVDP` Instruction receiving Global Safety state:*
+        ![PLC-C RCVDP Instruction](images/PLCC_RCVDP.png)
+
+        *Example: PLC-C `SENDDP` Instruction transmitting local status to 1518HF:*
+        ![PLC-C SENDDP Instruction](images/PLCC_SNDP.png)
 
 4.  **Hardware Compilation & Download:**
     *   Compile the safety program and hardware configuration.
