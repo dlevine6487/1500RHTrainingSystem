@@ -53,8 +53,13 @@ PLC-C acts as an independent subordinate safety controller that exchanges critic
 
 3.  **Safety Logic Exchange (SENDDP / RCVDP):**
     *   **Receiving Data (from 1518HF):** In PLC-C's `Main_Safety_RTG`, utilize the `RCVDP` instruction to unpack the PROFIsafe telegram sent by the 1518HF. Connect the LADDR input to the hardware identifier of the incoming transfer area.
+
+        ![RCVDP Instruction Configuration](images/RCVDP.png)
+
     *   **Local Reaction:** Map the extracted safety signals (e.g., "Global E-Stop Active") to PLC-C's local safety logic, driving local Safe Torque Off (STO) commands or contactors.
     *   **Transmitting Data (to 1518HF):** Use the `SENDDP` instruction to package PLC-C's local safety status (e.g., "PLC-C Zone OK", "Local E-Stop Status") into the outgoing transfer area, feeding back to the 1518HF system.
+
+        ![SENDDP Instruction Configuration](images/SNDP.png)
 
 4.  **Hardware Compilation & Download:**
     *   Compile the safety program and hardware configuration.
