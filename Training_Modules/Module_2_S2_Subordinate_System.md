@@ -167,6 +167,14 @@ The X1 interface of the PN/PN Coupler (connecting to the Blue Ring) must be conf
 *   In the **Network view**, select the "Not assigned" text link on the `PROFINET interface [X1]` of `PNPNCoupler-B`.
 *   Assign it to the redundant system (e.g., `PLC_1`). The text will update to **Multi assigned**, establishing the required S2 redundancy to both primary and backup CPUs.
 
+**Video Recap in Pictures: Multi-Assignment Process**
+
+![PN Assignment 2](images/PN_ASSIGNMENT_2.png)
+*Figure 2.X: Selecting the Not Assigned link to initiate multi-assignment for the PN/PN Coupler X1 Interface.*
+
+![PN Assignment 3](images/PN_ASSIGNMENT_3.png)
+*Figure 2.Y: The PN/PN Coupler X1 Interface is now successfully multi-assigned to the S7-1500R/H System.*
+
 **2. Network Topology and MRP Role**
 Ensure the PN/PN Coupler is correctly integrated into the subordinate topology.
 *   **MRP Role:** The coupler acts as a media redundancy **Client** within `mrpdomain-3` (managed by the Y-Switch).
