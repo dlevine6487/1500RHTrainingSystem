@@ -101,10 +101,7 @@ Before the final hardware configuration can be downloaded, the physical Y-Switch
     *   When prompted, strictly adhere to the project security standard by updating the credentials to:
         *   **Username:** `SiemensAdmin`
         *   **Password:** `Siemens1!`
-3.  **Update TIA Portal User Management:**
-    *   Return to the Y-Switch properties in TIA Portal.
-    *   Navigate to `Security -> Users` and update the project configuration to match these new credentials, ensuring TIA Portal can authenticate automatically during the download process.
-4.  **Download to Device:**
+3.  **Download to Device:**
     *   Select the Y-Switch module (`YSwitch-A`) in the Device view.
     *   Click **Download to device** -> **Hardware configuration** to finalize the integration.
 
@@ -162,7 +159,62 @@ Because of the specific gateway mode selected, the configuration of the IE/PB Li
 
 >   **Pro-Tip (RUN/STOP Mode):** The IE/PB Link HA maintains its own independent RUN and STOP operating modes. While the initial download should automatically prompt the device to transition to RUN, it may occasionally remain stuck in STOP mode. If this occurs, you can manually transition it: Navigate to the device via *Online access*, open **Online & diagnostics**, and use the controls under the **Online tools** section to manually switch the device from STOP to RUN mode.
 
-### 2.6 Critical Configuration: Watchdog Tuning (S2 Devices)
+### 2.6 Software Configuration: The PN/PN Coupler (Standard S2 Setup)
+The PN/PN Coupler facilitates deterministic data exchange between the highly available S7-1518HF system (PLC-A/B) and a subordinate controller (PLC-C). While it is capable of routing failsafe data (covered in Module 4), standard process data mapping is a prerequisite.
+
+**1. S2 Device Assignment (Multi-assignment)**
+The X1 interface of the PN/PN Coupler (connecting to the Blue Ring) must be configured as an S2 device.
+*   In the **Network view**, select the "Not assigned" text link on the `PROFINET interface [X1]` of `PNPNCoupler-B`.
+*   Assign it to the redundant system (e.g., `PLC_1`). The text will update to **Multi assigned**, establishing the required S2 redundancy to both primary and backup CPUs.
+
+**Video Recap in Pictures: Multi-Assignment Process**
+
+![PN Assignment 2](images/PN_ASSIGNMENT_2.png)
+*Figure 2.X: Selecting the Not Assigned link to initiate multi-assignment for the PN/PN Coupler X1 Interface.*
+
+![PN Assignment 3](images/PN_ASSIGNMENT_3.png)
+*Figure 2.Y: The PN/PN Coupler X1 Interface is now successfully multi-assigned to the S7-1500R/H System.*
+
+**2. Network Topology and MRP Role**
+Ensure the PN/PN Coupler is correctly integrated into the subordinate topology.
+*   **MRP Role:** The coupler acts as a media redundancy **Client** within `mrpdomain-3` (managed by the Y-Switch).
+*   **Topology:** In the Topology view, graphically connect the coupler's X1 interface ports to the adjacent devices in the Blue Ring, closing the physical loop.
+
+**3. Standard Transfer Area Mapping**
+Data exchange across the coupler relies on symmetrical 'Transfer Areas'. Data written to the Output memory of the Sender is read from the Input memory of the Receiver.
+
+1.  Navigate to the coupler properties: `PROFINET interface [X1] -> Module parameters -> Transfer mapping`.
+2.  Add a new standard **Transfer area** (e.g., `Transfer area_1`).
+3.  Configure the data type and length. For standard process data, common configurations utilize `IN/OUT` types with matching Byte lengths on both sides (e.g., 10 Bytes).
+
+![PN Coupler Standard IO Mapping 1](images/Mapping_IO_PN_Coupler.png)
+
+4.  Ensure the addressing on the X2 interface (connected to PLC-C) perfectly mirrors the configuration defined on the X1 interface.
+
+![PN Coupler Standard IO Mapping 2](images/Mapping_IO_PN_Coupler_2.png)
+
+>   **Pro-Tip:** Transfer areas must be identical in size and data type on both the X1 (Redundant System) and X2 (PLC-C) sides. Any mismatch will result in an IO access error and prevent data exchange.
+
+**4. Tag Table Alignment (Redundant PLC Side)**
+To manage the raw byte data, define structured tags within the redundant PLC's Tag Table.
+
+*   Map the configured Input (I) and Output (Q) addresses from the X1 transfer area to descriptive tags.
+*   Example: If the transfer area is configured for `I address 0...10` and `Q address 0...9`, create tags mapping to `%IB0` through `%IB10` and `%QB0` through `%QB9`.
+
+![Tag Table Alignment - Redundant System](images/PLC_Redundant_Tag_table_standard.png)
+
+**5. Tag Table Alignment (Subordinate PLC-C Side)**
+Similarly, establish the corresponding tags within the PLC-C project, mapping them to the addresses defined on the X2 interface.
+
+*   Ensure the tag naming convention logically mirrors the redundant system (e.g., a "Send" tag on the redundant side corresponds to a "Receive" tag on PLC-C).
+
+![Tag Table Alignment - PLC C](images/PLC_C_Tag_table_standard.png)
+![Data Map - PLC C 1](images/PLC_C_data_map_standard.png)
+![Data Map - PLC C 2](images/PLC_C_data_map_standard_2.png)
+
+>   **Pro-Tip:** Utilizing User-Defined Data Types (UDTs) for these transfer areas drastically reduces mapping errors and provides a structured interface between the disparate systems. Define the UDT in a shared library and use it in both projects.
+
+### 2.7 Critical Configuration: Watchdog Tuning (S2 Devices)
 S2 devices connected via the Y-Switch must survive the primary-to-backup switchover latency (approx 300ms) without generating a communication fault.
 
 *   **Requirement:** The Watchdog Timer must exceed > 300ms.
@@ -173,7 +225,7 @@ S2 devices connected via the Y-Switch must survive the primary-to-backup switcho
     *   *Calculation:* `Update Time * Cycles > 300ms`. (e.g., 4ms update time * 100 cycles = 400ms watchdog).
 >   **Pro-Tip:** Default system calculations often leave watchdog timers around 6ms. This is the leading cause of S2 devices dropping during a switchover event. Always manually tune scan time parameters for HA systems.
 
-### 2.7 Pairing & Synchronization: Achieving RUN-Redundant State
+### 2.8 Pairing & Synchronization: Achieving RUN-Redundant State
 Commissioning requires careful synchronization to transition from a stopped state to a fully redundant operational mode.
 
 1.  **Initial Hardware Download:** With the primary CPU (`PLC_1A`) in `STOP` mode, download the complete, compiled hardware configuration from TIA Portal. This is required for major topology changes like adding a Y-Switch.
@@ -182,7 +234,7 @@ Commissioning requires careful synchronization to transition from a stopped stat
 4.  **Backup CPU Synchronization:** Power on the backup CPU (`PLC_1B`). It automatically detects the primary controller via the fiber-optic sync link.
 5.  **Achieving the State:** The backup CPU will autonomously transfer the active project data, sync the process image, and transition seamlessly into the `RUN-Redundant` state, indicated by solid green LEDs on both controllers.
 
-### 2.8 Troubleshooting Common Integration Pitfalls
+### 2.9 Troubleshooting Common Integration Pitfalls
 Systematic diagnosis is required when integration fails.
 
 1.  **Symptom: Sync Error - Backup CPU remains in STOP mode.**
@@ -193,7 +245,7 @@ Systematic diagnosis is required when integration fails.
     *   **Solution:** Review step 2.4(4). Ensure the physical cables match the logical `P1.1` and `P2.1` assignments. Use TIA Portal Topology view to confirm expected vs. actual connections.
 3.  **Symptom: Redundancy Loss - Subordinate devices drop when testing primary failover.**
     *   **Pitfall:** S2 Watchdog timers are too aggressive (scan time < failover latency).
-    *   **Solution:** Recalculate and apply Watchdog Timers ensuring they significantly exceed the 300ms threshold (Review Section 2.6).
+    *   **Solution:** Recalculate and apply Watchdog Timers ensuring they significantly exceed the 300ms threshold (Review Section 2.7).
 4.  **Symptom: Diagnostics Alarm "Wrong configuration, the configuration cannot be applied" in R/H-CPU.**
     *   **Pitfall:** The IE/PB Link HA and the R/H-CPU have mismatched configuration data because they were not downloaded in the correct sequence.
     *   **Solution:** Re-download the project. Download strictly to the R/H-CPUs first, then to the IE/PB Link HA.
