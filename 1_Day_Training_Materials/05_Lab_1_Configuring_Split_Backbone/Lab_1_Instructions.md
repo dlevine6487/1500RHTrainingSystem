@@ -39,16 +39,13 @@ The XF204-DNA bridges the redundant R1 backbone to the standard S2 "Blue Ring".
 5. **Don't:** Assign the uplink ports (facing Switch-A/B) to `mrpdomain-1` or `mrpdomain-2`. They are independent.
 6. **Don't:** Connect the "Blue Ring" cables to anything other than the explicitly defined Ring Ports (e.g., P1.1 and P2.1). Micro-loops will crash the segment.
 
-### Step 5: Watchdog Tuning (Latency Mitigation)
-System failover takes up to 300ms. Standard watchdogs will trigger a fault before the backup assumes control.
+### Step 5: Watchdog Tuning - Pinch Point Scenario
+System failover takes up to 300ms. Let's intentionally configure a failure to understand how it feels in TIA Portal.
 1. Select `ET200SP-A` > **PROFINET Interface** > **Advanced Options** > **Real time settings** > **IO Cycle**.
-2. Set the **Update Time** to a stable value (e.g., `4.0 ms`).
-3. Set **Accepted update cycles without IO data** to `100` (4.0ms * 100 = 400ms).
-4. Verify the Watchdog time exceeds 300ms.
-5. Repeat for `PNPNCoupler-B` and other S2 clients on the Blue Ring.
+2. **Intentional Failure:** Leave the **Accepted update cycles without IO data** at the default value of `3` (yielding a Watchdog of ~6ms).
+3. Select the `PLC_1` folder, Compile the Hardware, and **Download to device** (Controllers in STOP).
+4. Put the primary CPU into RUN. Force a CPU switchover by pulling the sync fiber or stopping the primary CPU.
+5. **Observation:** Open the TIA Portal diagnostics buffer. Note the "IO device failure" because the 6ms watchdog expired before the Backup CPU could take over. The outputs dropped (bumped transfer).
+6. **Correction:** Go back offline. Change the **Accepted update cycles** to `100` (4.0ms * 100 = 400ms).
+7. Download the corrected hardware configuration and test the switchover again. The IO should remain active without faulting.
 *(Instructor Note: Demonstrate using the PN Watchdog Add-in here as well).*
-
-### Step 6: Compilation and Download
-1. Select the `PLC_1` folder in the project tree.
-2. Click **Compile** > **Hardware (rebuild all)**.
-3. With the controllers in STOP mode, click **Download to device**.

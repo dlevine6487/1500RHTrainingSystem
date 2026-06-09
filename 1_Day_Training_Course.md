@@ -28,23 +28,20 @@ The "1500RH redundant training demo" is an advanced training suite for Siemens h
 
 ---
 
-## Hourly Agenda (09:00 - 17:00)
+## Hourly Agenda (09:00 - 15:00)
 
 **Morning Session: Architecture & Fundamentals**
-* **09:00 - 09:30 | Introduction & System Overview:** What is the 1500RH system? The business case for High Availability and the concept of "bumpless" transfer.
-* **09:30 - 10:30 | Architecture Deep Dive:** The "Split Backbone" topology. Detailed breakdown of R1 (Redundant Interface) vs. S2 (System Redundancy). Understanding MRP Domains: Who's the MRP master, and how many domains? Discussion on R1 plus network switches linking S2 devices across multiple panels.
-* **10:30 - 10:45 | Coffee Break**
-* **10:45 - 11:45 | The 1500RH Standard/Unit:** Capabilities, constraints, and operational modes (STOP, RUN-Solo, RUN-Redundant, SYNCUP). System limits and maintenance considerations.
-* **11:45 - 12:30 | Network Commissioning & Watchdog Tuning:** Crucial configurations for HA systems. Calculating and assigning Profinet Watchdog Timers (>300ms latency) using manual and Add-In methods.
+* **09:00 - 10:00 | Introduction & Architecture Deep Dive:** What is the 1500RH system? The business case for HA. "Split Backbone" topology, R1 vs. S2, and MRP Domains (Who's the master, domains, linking S2 across panels).
+* **10:00 - 10:45 | The 1500RH Standard & Commissioning:** Operational modes (RUN-Solo, RUN-Redundant, SYNCUP), single mode, and crucial HA configurations (Profinet Watchdog Timers).
+* **10:45 - 11:00 | Coffee Break**
+* **11:00 - 12:00 | Lab 1: Configuring the Split Backbone & Pinch Points:** Multi-assigning devices, Y-Switch setup, and a forced Watchdog failure scenario to demonstrate TIA Portal fault diagnostics.
 
-**12:30 - 13:30 | Lunch Break**
+**12:00 - 12:45 | Lunch Break**
 
 **Afternoon Session: Hands-On Labs & Safety Integration**
-* **13:30 - 14:30 | Lab 1: Configuring the Split Backbone & Y-Switch Integration:** Multi-assigning R1/S2 devices, configuring MRP clients, and integrating the XF204-DNA Y-Switch to bridge the subordinate S2 ring.
-* **14:30 - 15:30 | Lab 2: Component-Level Redundancy with LRedIO:** Deploying the LRedIO library for 1oo2 voting on Digital Inputs and Dual-Drive on Digital Outputs across isolated ET200SP stations.
-* **15:30 - 15:45 | Coffee Break**
-* **15:45 - 16:30 | Cross-System Safety (F-Link):** Implementing safety communication between the 1518HF and a subordinate PLC (PLC-C) using the PN/PN Coupler. Discussion on "When to PN Couple or not to PN Couple?". Mirrored transfer areas and SENDDP/RCVDP instructions.
-* **16:30 - 17:00 | Lab 3: System Validation & Failover Simulation:** Executing failover scenarios, evaluating diagnostic buffers (e.g., OB70/OB72 handling for redundancy loss/return), and final assessment. Q&A.
+* **12:45 - 13:30 | Lab 2: Component-Level Redundancy with LRedIO:** Deploying LRedIO for 1oo2 voting and Dual-Drive. Exploring discrepancy time "Pinch Points" and an instructor demo on V21 Openness.
+* **13:30 - 14:00 | Cross-System Safety (F-Link):** Safety communication (PN/PN Coupler), "When to PN Couple or not to PN Couple?", mirrored transfer areas, and SENDDP/RCVDP.
+* **14:00 - 15:00 | Lab 3: System Validation & Failover Simulation:** Executing CPU/Network failover scenarios, exploring H-CiR limitations (Pinch Point), evaluating diagnostic buffers (OB70/OB72), and final Q&A.
 
 ---
 

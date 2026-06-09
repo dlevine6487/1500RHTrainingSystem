@@ -24,7 +24,7 @@ We want a reset button signal to be registered if *either* the channel on Side A
    * **Input_A:** Map to the tag `%I120.0` (`"BlueResetButton_SideA_1"`).
    * **Input_B:** Map to the tag `%I110.0` (`"BlueResetButton_SideA_2"`).
    *(Note: Based on best practices, we mix channels on the same physical side for LRedIO mapping in this demo)*.
-4. Set the **DiscrepancyTime** to `T#500ms` to account for network jitter or contact bounce.
+4. **Pinch Point - Discrepancy Time:** Initially, set the **DiscrepancyTime** extremely low to `T#2ms`. We will observe what happens when network jitter exceeds this.
 5. Map the output `Out` to a new internal memory tag (e.g., `"Validated_Reset_Cmd"`).
 
 ### Step 3: Implementing Dual Drive for Digital Outputs
@@ -44,8 +44,10 @@ We want a single PLC command to activate a lamp on *both* Side A output channels
 2. Because these are logic changes, you can perform an **Online Download** (changes only) without stopping the primary CPU.
 3. The Backup CPU will automatically sync the changes.
 
-### Step 6: Testing
+### Step 6: Testing & Discrepancy Observation
 1. Go online and monitor OB1.
-2. Toggle `%I120.0` True, then False. Verify the `Out` parameter turns True.
-3. Toggle `%I110.0` True, then False. Verify the `Out` parameter turns True.
-4. Trigger the `"System_Reset_Cmd_Output"`. Verify both `%Q100.0` and `%Q110.0` turn True simultaneously.
+2. **Observe the Pinch Point:** Toggle *only* `%I120.0` True, while leaving `%I110.0` False.
+3. After 2ms, observe that the `LRedIO_DI_1oo2` block throws a discrepancy fault because the inputs don't match within the configured window.
+4. **Correction:** Go offline, change the **DiscrepancyTime** to `T#500ms` to account for realistic contact bounce and network delays. Download the change.
+5. Test again by toggling `%I120.0` and verify the `Out` parameter turns True reliably.
+6. Trigger the `"System_Reset_Cmd_Output"`. Verify both `%Q100.0` and `%Q110.0` turn True simultaneously.
