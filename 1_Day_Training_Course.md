@@ -60,8 +60,8 @@ The "1500RH redundant training demo" is an advanced training suite for Siemens h
 ### Lab 2: Component-Level Redundancy with LRedIO
 **Objective:** Implement software redundancy for critical I/O across physical R1 stations.
 1. **Library Import:** Open the Project Library, navigate to Master Copies, and drag the `LRedIO` blocks into your program blocks folder.
-2. **1oo2 Voting (Inputs):** In OB1 (or your main cyclic block), call `LRedIO_DI_1oo2`. Map `Input_A` to `%I120.0` ("BlueResetButton_SideA_1") and `Input_B` to `%I63.0` ("BlueResetButton_SideB_1"). Set Discrepancy Time to 500ms.
-3. **Dual Drive (Outputs):** Call `LRedIO_DQ`. Map your control logic command to `In`. Map `Output_A` to `%Q100.0` ("BlueResetLamp_SideA_1") and `Output_B` to `%Q12.0` ("BlueResetLamp_SideB_1").
+2. **1oo2 Voting (Inputs):** In OB1 (or your main cyclic block), call `LRedIO_DI_1oo2`. Map `Input_A` to `%I120.0` ("BlueResetButton_SideA_1") and `Input_B` to `%I110.0` ("BlueResetButton_SideA_2"). Set Discrepancy Time to 500ms.
+3. **Dual Drive (Outputs):** Call `LRedIO_DQ`. Map your control logic command to `In`. Map `Output_A` to `%Q100.0` ("BlueResetLamp_SideA_1") and `Output_B` to `%Q110.0` ("BlueResetLamp_SideA_2").
 4. **Compile & Download:** Compile the logic and perform an online download (changes only).
 
 ### Lab 3: System Validation & Failover Simulation
