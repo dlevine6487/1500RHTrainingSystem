@@ -32,7 +32,7 @@ The "1500RH redundant training demo" is an advanced training suite for Siemens h
 
 **Morning Session: Architecture & Fundamentals**
 * **09:00 - 09:30 | Introduction & System Overview:** What is the 1500RH system? The business case for High Availability and the concept of "bumpless" transfer.
-* **09:30 - 10:30 | Architecture Deep Dive:** The "Split Backbone" topology. Detailed breakdown of R1 (Redundant Interface) vs. S2 (System Redundancy). Understanding MRP Domains (1, 2, and 3).
+* **09:30 - 10:30 | Architecture Deep Dive:** The "Split Backbone" topology. Detailed breakdown of R1 (Redundant Interface) vs. S2 (System Redundancy). Understanding MRP Domains: Who's the MRP master, and how many domains? Discussion on R1 plus network switches linking S2 devices across multiple panels.
 * **10:30 - 10:45 | Coffee Break**
 * **10:45 - 11:45 | The 1500RH Standard/Unit:** Capabilities, constraints, and operational modes (STOP, RUN-Solo, RUN-Redundant, SYNCUP). System limits and maintenance considerations.
 * **11:45 - 12:30 | Network Commissioning & Watchdog Tuning:** Crucial configurations for HA systems. Calculating and assigning Profinet Watchdog Timers (>300ms latency) using manual and Add-In methods.
@@ -43,15 +43,15 @@ The "1500RH redundant training demo" is an advanced training suite for Siemens h
 * **13:30 - 14:30 | Lab 1: Configuring the Split Backbone & Y-Switch Integration:** Multi-assigning R1/S2 devices, configuring MRP clients, and integrating the XF204-DNA Y-Switch to bridge the subordinate S2 ring.
 * **14:30 - 15:30 | Lab 2: Component-Level Redundancy with LRedIO:** Deploying the LRedIO library for 1oo2 voting on Digital Inputs and Dual-Drive on Digital Outputs across isolated ET200SP stations.
 * **15:30 - 15:45 | Coffee Break**
-* **15:45 - 16:30 | Cross-System Safety (F-Link):** Implementing safety communication between the 1518HF and a subordinate PLC (PLC-C) using the PN/PN Coupler, mirrored transfer areas, and SENDDP/RCVDP instructions.
-* **16:30 - 17:00 | Lab 3: System Validation & Failover Simulation:** Executing failover scenarios, evaluating diagnostic buffers, and final assessment. Q&A.
+* **15:45 - 16:30 | Cross-System Safety (F-Link):** Implementing safety communication between the 1518HF and a subordinate PLC (PLC-C) using the PN/PN Coupler. Discussion on "When to PN Couple or not to PN Couple?". Mirrored transfer areas and SENDDP/RCVDP instructions.
+* **16:30 - 17:00 | Lab 3: System Validation & Failover Simulation:** Executing failover scenarios, evaluating diagnostic buffers (e.g., OB70/OB72 handling for redundancy loss/return), and final assessment. Q&A.
 
 ---
 
 ## Lab Instructions
 
 ### Lab 1: Configuring the Split Backbone & Y-Switch Integration
-**Objective:** Construct the R1 network and integrate the S2 subordinate ring.
+**Objective:** Construct the R1 network and integrate the S2 subordinate ring, while discussing Y-Switch configuration do's and do not's.
 1. **Clone & Explore:** Clone the repository and open the TIA Portal project. Navigate to `Network View`.
 2. **Configure MRP Clients:** Configure `Switch-A` as an MRP Client in `mrpdomain-1` and `Switch-B` as an MRP Client in `mrpdomain-2`. Ensure backbone ports are assigned to the rings.
 3. **Multi-Assignment:** Click the "Not Assigned" link on the `ET200SP-A` PROFINET interface and assign it to the redundant `PLC_1` system, making it "Multi-assigned." Repeat for the `X1` interface of `PNPNCoupler-B`.
@@ -63,6 +63,7 @@ The "1500RH redundant training demo" is an advanced training suite for Siemens h
 2. **1oo2 Voting (Inputs):** In OB1 (or your main cyclic block), call `LRedIO_DI_1oo2`. Map `Input_A` to `%I120.0` ("BlueResetButton_SideA_1") and `Input_B` to `%I110.0` ("BlueResetButton_SideA_2"). Set Discrepancy Time to 500ms.
 3. **Dual Drive (Outputs):** Call `LRedIO_DQ`. Map your control logic command to `In`. Map `Output_A` to `%Q100.0` ("BlueResetLamp_SideA_1") and `Output_B` to `%Q110.0` ("BlueResetLamp_SideA_2").
 4. **Compile & Download:** Compile the logic and perform an online download (changes only).
+5. **Instructor Demo (Extra):** Exploring LRedIO automation using TIA Portal V21 Openness.
 
 ### Lab 3: System Validation & Failover Simulation
 **Objective:** Prove system resilience against hardware and network faults.
@@ -70,7 +71,7 @@ The "1500RH redundant training demo" is an advanced training suite for Siemens h
 2. **CPU Failover Test:** Physically disconnect the power or flip the STOP switch on the Primary PLC.
 3. **Validation:** Observe the "BlueResetLamp". It must remain lit (bumpless transfer) as the Backup PLC assumes the Primary role.
 4. **Network Failover Test:** Re-establish the RUN-Redundant state. Disconnect the PROFINET cable between `Switch-A` and the `ET200SP-A` R1 Interface.
-5. **Diagnostics:** Check the TIA Portal diagnostics buffer. The system should report a network disruption but process logic must continue uninterrupted utilizing Side B.
+5. **Diagnostics:** Check the TIA Portal diagnostics buffer. The system should report a network disruption (calling OB70 for peripheral redundancy loss or OB72 for H-Sync loss), but process logic must continue uninterrupted utilizing Side B.
 
 ---
 
