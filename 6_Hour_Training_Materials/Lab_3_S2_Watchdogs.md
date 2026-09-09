@@ -13,6 +13,9 @@
    * **IE/PB Link HA:** Verify it has a Profibus network assigned. The network gateway parameter should be set to 'local download required'. *Note: These gateways require an independent hardware download after the main PLC is loaded.*
    * **PN/PN Coupler:** Verify that the Transfer Areas (F-CD or F-MS) are present. For Safety communication to work, the F-Address must match exactly on both the Sender and Receiver sides. This configuration is mostly pre-templated for you.
 
+> **Pro-Tip: Subordinate MRP Domains**
+> Remember to consider which domain you subscribe your subordinate S2 network to! In this demo, the standard ET200SP-B, IE/PB Link HA, and PN/PN Coupler are part of an MRP ring controlled on `mrpdomain-3`. This domain is *not* managed directly by the PLC CPUs (which handle Domains 1 and 2), but is instead managed solely by the Y-Switch to isolate traffic. Ensure the PROFINET interfaces for these subordinate devices are explicitly assigned to `mrpdomain-3` under their Media Redundancy settings.
+
 3. **Manual Watchdog Tuning (Pinch Point):**
    * The default Watchdog update cycle count (typically 3 cycles, ~6ms) is insufficient for an S7-1500RH system to survive a switchover. If left at default, the IO will drop out during a failover event.
    * **Manual Method (Primary):** Select `ET200SP-B`. Go to `Properties` -> `PROFINET interface [X1]` -> `Advanced options` -> `Real time settings` -> `IO cycle`.
