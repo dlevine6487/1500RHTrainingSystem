@@ -6,7 +6,12 @@ Welcome to the Siemens S7-1518HF Training & Integration Suite. This documentatio
 
 ### Full Courses & Itineraries
 *   **[6-Hour Practical Commissioning Course](6_Hour_Training_Course.md):** Hands-on labs focusing on R1 Backbone, Y-Switch, and S2 Subordinate Ring configuration.
-    * *Includes: [Lab Instructions](6_Hour_Training_Materials/Lab_Instructions.md) and [Instructor Notes](6_Hour_Training_Materials/Instructor_Notes.md).*
+    * *Includes:*
+        * *[Lab 1: Commissioning the R1 Network](6_Hour_Training_Materials/Lab_1_Commissioning_R1.md)*
+        * *[Lab 2: The Y-Switch & Subordinate S2 Networks](6_Hour_Training_Materials/Lab_2_YSwitch_S2.md)*
+        * *[Lab 3: Populating the S2 Ring & Watchdog Tuning](6_Hour_Training_Materials/Lab_3_S2_Watchdogs.md)*
+        * *[Lab 4: Failure Scenarios & Diagnostics](6_Hour_Training_Materials/Lab_4_Failures.md)*
+        * *[Instructor Notes](6_Hour_Training_Materials/Instructor_Notes.md)*
 *   **[1-Hour Executive Overview Course](1_Hour_Training_Course.md):** A high-level theoretical overview without hands-on labs, ideal for management and architectural planning.
 
 ### Technical Deep-Dive Modules (Reference)
