@@ -35,28 +35,29 @@ The "1500RH redundant training demo" is an advanced training suite for Siemens h
 * **Focus:** S7-1500R vs. S7-1500H differences, sync mechanisms, and the "Split Backbone" topology concept.
 * **Key Concept:** Understanding R1 (Redundant Interface) vs. S2 (System Redundancy).
 
-**10:00 - 11:15 | Session 2: Commissioning the R1 Network (Hands-On Lab)**
+**10:00 - 11:30 | Session 2: Commissioning the R1 Network (Hands-On Lab & Pivot 1)**
 * **Focus:** Connecting to the physical demo kit and configuring the primary R1 backbone.
-* **Lab Actions:** IP/Profinet name assignment, building the R1 network intentionally using two separate PROFINET subnets, MRP Rings setup (Domain 1 and Domain 2), and crucial Multi-assignment of R1 devices.
+* **Lab Actions:** IP/Profinet name assignment, building the R1 network intentionally using two separate PROFINET subnets, MRP Rings setup, and Multi-assignment of R1 devices.
+* **Pivot Point 1 (15 Min):** Guest Presentation: Expanding the portfolio—introducing the ET200SP HA as an alternative robust R1 remote IO option.
 
-**11:15 - 11:30 | Break (15 Min)**
+**11:30 - 11:45 | Break (15 Min)**
 
-**11:30 - 12:30 | Session 3: The Y-Switch & Subordinate S2 Networks (Theory & Lab)**
-* **Focus:** Bridging an R1 highly available network to a standard S2 ring using the Scalance XF204-DNA (Y-Switch).
-* **Theory:** Y-Switch rules, DNA Redundancy, and the architectural requirement forcing a single-subnet approach.
-* **Lab Actions:** Refactoring the dual-subnet R1 network into a single PROFINET subnet (Pinch Point). Enabling DNA Redundancy, configuring Ring Redundancy as 'MRP Manager' for Domain 3, and mapping physical ports.
+**11:45 - 13:00 | Session 3: The Y-Switch & Subordinate S2 Networks (Theory & Lab)**
+* **Focus:** Bridging an R1 network to a standard S2 ring using the Y-Switch, and the flat network requirement.
+* **Lab Actions:** Refactoring the dual-subnet R1 network into a single PROFINET subnet (Pinch Point). Enabling DNA Redundancy, configuring Ring Redundancy as 'MRP Manager', and mapping physical ports.
 
-**12:30 - 13:15 | Lunch (45 Min)**
+**13:00 - 13:45 | Lunch (45 Min)**
 
-**13:15 - 14:15 | Session 4: Populating the S2 Ring & Watchdog Tuning (Hands-On Lab)**
+**13:45 - 14:30 | Session 4: Populating the S2 Ring & Watchdog Tuning (Hands-On Lab)**
 * **Focus:** Bringing S2 devices online behind the Y-Switch and preventing nuisance failovers. Includes templated integration of IE/PB Link HA and PN/PN Coupler.
 * **Lab Actions:** Multi-assigning standard S2 devices to the redundant CPU system. Manual Watchdog Timer configuration (>300ms) to survive system switchover.
 
-**14:15 - 15:00 | Session 5: Failure Scenarios & Diagnostics (Hands-On Lab)**
+**14:30 - 15:15 | Session 5: Failure Scenarios & Diagnostics (Hands-On Lab & Pivot 2)**
 * **Focus:** Proving system resilience against hardware and network faults.
 * **Lab Actions:** Downloading full configuration, achieving RUN-Redundant state. Simulating sync cable failures, Primary CPU power loss (bumpless transfer), and analyzing diagnostic buffers (OB70/OB72).
+* **Pivot Point 2 (15 Min):** Guest Presentation: Direct hardwired timing. Showcasing a subordinate PLC digitally coupled to the Redundant System, measuring the physical time between failover events in R1 vs S2 setups (with and without MRP configurations).
 
-**15:00 - 15:30 | Session 6: Programming Considerations & Wrap-up (Theory)**
+**15:15 - 15:45 | Session 6: Programming Considerations & Wrap-up (Theory)**
 * **Focus:** How redundancy affects user code.
 * **Theory:** Sync-restricted instructions, cycle time impacts, H-CiR (Hardware Configuration in RUN) limitations, and final Q&A.
 

@@ -37,5 +37,9 @@
    * Then, select IM 2 (Side B) and assign it explicitly to `mrpdomain-2`.
    * *Why?* Even if you are not utilizing full MRP (Media Redundancy Protocol) for physical ring topologies in a specific installation, this logical domain separation is absolutely required in the PLC controller to correctly split the R1 system and manage communication paths during a failover.
 
+6. **Pivot Point 1: Expanding the Portfolio (ET200SP HA):**
+   * Before proceeding to standard devices, pause lab work.
+   * **Guest Presentation (15 Min):** A presenter will discuss the ET200SP HA. While not utilized in this specific lab environment, it serves as a point-in-case that there are other robust, purpose-built R1 devices available in the Siemens portfolio tailored for high-availability setups.
+
 > **Pro-Tip: Avoiding Split Brains**
 > When setting up the MRP rings, ensure that Domain 1 and Domain 2 are physically and logically completely isolated. Do not cross-connect the switches on Side A to Side B. The only device that should communicate across both is the R1 IO node or the Y-Switch. A cross-connection can cause an MRP storm or lead to a "split-brain" scenario where both CPUs attempt to assume the Primary role.

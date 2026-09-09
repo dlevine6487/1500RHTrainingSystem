@@ -22,5 +22,9 @@
    * **Observation:** The Backup CPU instantly assumes the Primary role. The process outputs (e.g., indicator lamps) should remain stable (Bumpless Transfer).
    * **Diagnostics:** Check the diagnostic buffer of the new Primary CPU. You will see an entry for system redundancy loss (calling OB72).
 
+4. **Pivot Point 2: Direct Hardwired Timing Presentation:**
+   * **Guest Presentation (15 Min):** A presenter will showcase a separate subordinate PLC. This PLC utilizes a direct Digital Input coupled to the Digital Output of the Redundant System.
+   * The presenter will demonstrate the physical time between failover events, explicitly comparing the timings in an R1 setup versus an S2 setup, and further comparing the timings with and without MRP configurations for the remote IO stations.
+
 > **Pro-Tip: Gateway Startup Issues**
 > If the IE/PB Link HA remains in STOP mode after its initial download, it often requires a manual push. You can transition it to RUN mode via TIA Portal's 'Online access' -> 'Online & diagnostics' -> 'Online tools'. Additionally, always verify the mandatory C-PLUG (Configuration Plug) is securely inserted behind the front cover.

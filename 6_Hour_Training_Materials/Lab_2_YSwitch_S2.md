@@ -5,8 +5,8 @@
 ### Step-by-Step Configuration:
 
 1. **The Subnet Refactoring Pinch Point (The Flat Network Requirement):**
-   * Try to multi-assign the `YSwitch-A` to the redundant system in the `Network view`. Because your PLCs are on separate subnets (`PN/IE_PlantA` and `PN/IE_PlantB`), the S2 Multi-assignment *will fail*.
-   * **The Lesson:** An S2 device (like the Y-Switch, and the devices behind it) requires a logical path to *both* CPUs simultaneously. This is impossible if the CPUs reside on disjoint PROFINET subnets. Therefore, introducing a Y-Switch—or setting up backbone switches as S2 devices—mandates a flat network view configuration across *one* PROFINET subnet.
+   * Try to multi-assign the `YSwitch-A` (or the backbone switches) to the redundant system in the `Network view` to make them S2 devices. Because your PLCs are on separate subnets (`PN/IE_PlantA` and `PN/IE_PlantB`), the S2 Multi-assignment *will fail* during compilation.
+   * **The Lesson:** An S2 device (like the Y-Switch, and the devices behind it) requires a logical path to *both* CPUs simultaneously. This is structurally impossible if the CPUs reside on disjoint PROFINET subnets. While R1 devices can handle disjoint subnets (as seen in Lab 1), introducing an S2 device into the system absolutely mandates a flat network view configuration across *one* PROFINET subnet.
    * **Action:**
      1. Refactor your network. Delete the disjoint subnets (`PN/IE_PlantA` and `PN/IE_PlantB`).
      2. Create a new, single PROFINET subnet and rename it to `PN/IE_Plant`.
