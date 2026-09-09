@@ -37,14 +37,14 @@ The "1500RH redundant training demo" is an advanced training suite for Siemens h
 
 **10:00 - 11:15 | Session 2: Commissioning the R1 Network (Hands-On Lab)**
 * **Focus:** Connecting to the physical demo kit and configuring the primary R1 backbone.
-* **Lab Actions:** IP/Profinet name assignment, MRP Rings setup (Domain 1 and Domain 2), and crucial Multi-assignment of R1 devices.
+* **Lab Actions:** IP/Profinet name assignment, building the R1 network intentionally using two separate PROFINET subnets, MRP Rings setup (Domain 1 and Domain 2), and crucial Multi-assignment of R1 devices.
 
 **11:15 - 11:30 | Break (15 Min)**
 
 **11:30 - 12:30 | Session 3: The Y-Switch & Subordinate S2 Networks (Theory & Lab)**
 * **Focus:** Bridging an R1 highly available network to a standard S2 ring using the Scalance XF204-DNA (Y-Switch).
-* **Theory:** Y-Switch rules, DNA Redundancy, and isolated MRP Manager for the subordinate ring (Domain 3).
-* **Lab Actions:** Enabling DNA Redundancy, configuring Ring Redundancy as 'MRP Manager' for Domain 3, and mapping physical ports.
+* **Theory:** Y-Switch rules, DNA Redundancy, and the architectural requirement forcing a single-subnet approach.
+* **Lab Actions:** Refactoring the dual-subnet R1 network into a single PROFINET subnet (Pinch Point). Enabling DNA Redundancy, configuring Ring Redundancy as 'MRP Manager' for Domain 3, and mapping physical ports.
 
 **12:30 - 13:15 | Lunch (45 Min)**
 

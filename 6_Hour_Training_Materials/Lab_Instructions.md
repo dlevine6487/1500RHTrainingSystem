@@ -13,12 +13,16 @@ Welcome to the hands-on labs for the S7-1500R/H System. These labs are designed 
    * Navigate to `Online access` in the project tree. Select your active network adapter and click `Update accessible devices`.
    * Locate the physical CPUs and ET200SP-A in the list. Use `Online & diagnostics` -> `Functions` -> `Assign PROFINET device name` and `Assign IP address` to set the name and IPs according to the documented architecture (e.g., PLC-A: 192.168.0.1, PLC-B: 192.168.0.2).
 
-2. **Configure MRP Rings:**
+2. **Initial Subnet Strategy & S1 Switch Setup:**
+   * Initially, we will build this network using two entirely separate PROFINET IO subnets (e.g., `PN/IE_1` for Side A and `PN/IE_2` for Side B). Create these subnets and assign the primary CPU to subnet 1, and the backup CPU to subnet 2.
+   * Locate the backbone network switches (`Switch-A` and `Switch-B`). Configure them for **S1 PROFINET usage**. Assign them to their respective subnets.
+
+3. **Configure MRP Rings:**
    * In `Network view`, select the `PLC_1` (Redundant system). Go to `Properties` -> `PROFINET interface [X1]` -> `Advanced options` -> `Media redundancy`.
    * Assign PLC-A to manage `mrpdomain-1` (Side A) and PLC-B to manage `mrpdomain-2` (Side B).
-   * **Note:** The backbone switches (`Switch-A` and `Switch-B`) should also be configured as MRP Clients in their respective domains. (This may be pre-configured in your starter project).
+   * **Note:** Ensure the backbone switches (`Switch-A` and `Switch-B`) are configured as MRP Clients in their respective domains.
 
-3. **Multi-Assignment of R1 Devices:**
+4. **Multi-Assignment of R1 Devices:**
    * Locate `ET200SP-A` in the `Network view`.
    * Click the "Not assigned" link on its PROFINET interface.
    * Select the redundant `PLC_1` system. You will see the network lines visually connect to both rings. This signifies the device is now Multi-assigned to both the primary and backup CPUs.
@@ -34,7 +38,12 @@ Welcome to the hands-on labs for the S7-1500R/H System. These labs are designed 
 
 ### Step-by-Step Configuration:
 
-1. **Enable DNA Redundancy:**
+1. **The Subnet Refactoring Pinch Point:**
+   * Try to assign the `YSwitch-A` to the redundant system. You will likely encounter a configuration limitation.
+   * **The Lesson:** While a pure R1 design can utilize two separate subnets, integrating a Y-Switch in an S7-1500RH design *requires* configuring one PROFINET IO subnet with multiple domains.
+   * **Action:** Refactor your network. Delete the second subnet (`PN/IE_2`) and assign both CPU interfaces and all backbone switches back to the single `PN/IE_1` subnet. Re-verify your MRP domain assignments (Domain 1 and 2) are still correct. This decision must be made early in real projects to avoid massive rework!
+
+2. **Enable DNA Redundancy:**
    * Locate the `YSwitch-A` device in the `Network view` (it is pre-positioned).
    * Select the device and go to `Properties` -> `General` -> `Module parameters`.
    * Locate the setting for `DNA redundancy` and explicitly enable it. This tells the switch it is acting as a Y-Switch, not a standard Scalance switch.

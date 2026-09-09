@@ -15,10 +15,12 @@ This document provides guidance for instructors delivering the 6-hour practical 
 *   **Demo Kit Orientation:** Spend 5 minutes physically pointing out the components on the demo kit. Show them the split backbone wiring vs. the subordinate S2 ring wiring.
 
 ### Session 2: Commissioning R1 (10:00 - 11:15)
+*   **The Initial Setup Pinch Point:** The lab purposefully instructs students to build the network using two separate PROFINET subnets and configuring the backbone switches for S1 usage. This works perfectly for a pure R1 setup. **Do not correct them here.** This is setup for a powerful lesson in Session 3.
 *   **Watch for:** Students accidentally cross-connecting the MRP domains. Domain 1 and Domain 2 must be strictly separate. If a student creates an MRP ring that encompasses both switches and both PLC sides, the network will storm and the CPUs will fail to sync.
 *   **Multi-assignment:** Emphasize the "Not assigned" link. Show them how the Topology view changes visually when multi-assignment is successful.
 
 ### Session 3: The Y-Switch (11:30 - 12:30)
+*   **The Subnet Refactoring Pinch Point:** When students attempt to introduce the Y-Switch, they will hit a wall because of the dual-subnet configuration from Session 2. Explain *why* this happens: Y-Switches in an S7-1500RH design require a single PROFINET IO subnet encompassing multiple domains. Force them to delete the second subnet and rebuild it as a single subnet. Emphasize that making this architectural decision early in a real project saves hours of rework.
 *   **The DNA Redundancy Setting:** This is often missed. The switch will act as a generic unmanaged switch if DNA Redundancy is not explicitly checked in the module parameters.
 *   **MRP Manager (Domain 3):** Explain *why* the Y-Switch is the manager. It isolates the MRP ring traffic of the subordinate S2 ring from the highly available R1 backbone. The backbone must not see Domain 3 traffic.
 
