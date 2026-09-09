@@ -4,6 +4,12 @@ Welcome to the Siemens S7-1518HF Training & Integration Suite. This documentatio
 
 ## Table of Contents
 
+### Full Courses & Itineraries
+*   **[6-Hour Practical Commissioning Course](6_Hour_Training_Course.md):** Hands-on labs focusing on R1 Backbone, Y-Switch, and S2 Subordinate Ring configuration.
+    * *Includes: [Lab Instructions](6_Hour_Training_Materials/Lab_Instructions.md) and [Instructor Notes](6_Hour_Training_Materials/Instructor_Notes.md).*
+*   **[1-Hour Executive Overview Course](1_Hour_Training_Course.md):** A high-level theoretical overview without hands-on labs, ideal for management and architectural planning.
+
+### Technical Deep-Dive Modules (Reference)
 ### [Module 1: R1 Backbone Architecture & Station Integration](Training_Modules/Module_1_R1_Backbone.md)
 *   **Topics:** Split Backbone Topology, XC208 Switch Configuration (MRP Clients), R1 Remote IO Setup, Watchdog Tuning.
 
