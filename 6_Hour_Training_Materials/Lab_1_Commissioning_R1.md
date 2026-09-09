@@ -25,12 +25,15 @@
 4. **S1 Switch Setup & MRP Client Configuration:**
    * Now locate the backbone network switches (`Switch-A` and `Switch-B`).
    * Configure them for **S1 PROFINET usage**. Assign `Switch-A` to `PN/IE_1` and `Switch-B` to `PN/IE_2`.
+   * **Instructor Note:** It is important to explain that in this S1 configuration, the switch is *not considered redundant at all*. It is simply acting as a standard IO Device "along for the ride." While this configuration functions as an access point onto the network, it does not provide true PROFINET system redundancy on its own.
    * Navigate to their Media Redundancy settings. Ensure `Switch-A` is configured as an MRP Client in `mrpdomain-1` and `Switch-B` is an MRP Client in `mrpdomain-2`.
 
-5. **Multi-Assignment of R1 Devices:**
-   * Locate `ET200SP-A` in the `Network view`.
-   * Click the "Not assigned" link on its PROFINET interface.
-   * Select the redundant `PLC_1` system. You will see the network lines visually connect to both rings. This signifies the device is now Multi-assigned to both the primary and backup CPUs.
+5. **Multi-Assignment & IM Configuration of R1 Devices:**
+   * Locate `ET200SP-A` in the `Network view`. This R1 node contains two separate Interface Modules (IMs).
+   * First, click the "Not assigned" link on the PROFINET interface for the station. Select the redundant `PLC_1` system to multi-assign it. You will see the network lines visually connect to both rings.
+   * **Crucial Step:** You must explicitly configure each IM individually within the station properties. Select IM 1 (Side A) and navigate to its PROFINET interface properties. Assign it explicitly to `mrpdomain-1`.
+   * Then, select IM 2 (Side B) and assign it explicitly to `mrpdomain-2`.
+   * *Why?* Even if you are not utilizing full MRP (Media Redundancy Protocol) for physical ring topologies in a specific installation, this logical domain separation is absolutely required in the PLC controller to correctly split the R1 system and manage communication paths during a failover.
 
 > **Pro-Tip: Avoiding Split Brains**
 > When setting up the MRP rings, ensure that Domain 1 and Domain 2 are physically and logically completely isolated. Do not cross-connect the switches on Side A to Side B. The only device that should communicate across both is the R1 IO node or the Y-Switch. A cross-connection can cause an MRP storm or lead to a "split-brain" scenario where both CPUs attempt to assume the Primary role.
