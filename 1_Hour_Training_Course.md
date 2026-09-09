@@ -25,12 +25,16 @@ The "1500RH Executive Overview" is a rapid, high-level presentation designed for
 *   **Focus:** Introduction to the S7-1500R (Copper/IP-based sync, medium size) vs. S7-1500H (Fiber optic sync, large scale) architectures.
 
 **00:15 - 00:30 | Segment 2: Network Topologies & Redundancy Types**
-*   **Topic:** The "Split Backbone" topology and avoiding Single Points of Failure.
+*   **Topic:** The "Split Backbone" topology, Line Topologies, and avoiding Single Points of Failure.
 *   **Focus:** Defining and comparing device connection types:
     *   **S1:** Standard connection (no redundancy).
     *   **S2:** System Redundancy (single physical connection communicating with two CPUs).
     *   **R1:** Redundant Interface (two physical connections to two separate networks).
-*   **The Y-Switch:** How to bridge an R1 highly available network down to standard S2 plant floors using the Scalance XF204-DNA.
+*   **Topology Variations:**
+    *   **R1 Line Topology:** Discuss how R1 supports up to 512 devices in a line. Highlight the importance of *feeding from two sides*—if a double line interruption occurs, devices can still be reached from either end, unlike single-sided feeding where devices behind the break fail.
+*   **The Y-Switch & Subnet Architecture:** How to bridge an R1 highly available network down to standard S2/S1 plant floors using the Scalance XF204-DNA.
+    *   *Option 1: Subnet Separation:* Using 2 separate subnets allows for symmetric IP addresses, but makes it impossible to connect S1/S2 devices on both sides via a Y-Switch.
+    *   *Option 2: Shared Subnet:* Controllers and IO devices share a common subnet. This sacrifices symmetric IP addressing but is the *required architecture* (the "flat network") to allow the two-sided connection of S1/S2 devices via the Y-Switch.
 
 **00:30 - 00:45 | Segment 3: System Mechanics & The "Bumpless" Transfer**
 *   **Topic:** How the system actually fails over without dropping the process.

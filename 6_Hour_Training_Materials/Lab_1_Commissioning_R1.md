@@ -22,11 +22,13 @@
    * Assign PLC-A to manage `mrpdomain-1` (Side A).
    * Assign PLC-B to manage `mrpdomain-2` (Side B).
 
-4. **S1 Switch Setup & MRP Client Configuration:**
-   * Now locate the backbone network switches (`Switch-A` and `Switch-B`).
-   * Configure them for **S1 PROFINET usage**. Assign `Switch-A` to `PN/IE_1` and `Switch-B` to `PN/IE_2`.
-   * **Instructor Note:** It is important to explain that in this S1 configuration, the switch is *not considered redundant at all*. It is simply acting as a standard IO Device "along for the ride." While this configuration functions as an access point onto the network, it does not provide true PROFINET system redundancy on its own.
-   * Navigate to their Media Redundancy settings. Ensure `Switch-A` is configured as an MRP Client in `mrpdomain-1` and `Switch-B` is an MRP Client in `mrpdomain-2`.
+4. **Switch Setup: S1 vs. S2 Configuration:**
+   * Locate the backbone network switches (`Switch-A` and `Switch-B`).
+   * Currently, because our PLCs are on separate subnets (`PN/IE_1` and `PN/IE_2`), you can only assign a switch to *one* PLC subnet.
+   * Try clicking "Not Assigned" on `Switch-A`. You can only select PLC_1 via `PN/IE_1`. This forces the switch into an **S1 PROFINET configuration**.
+   * **The Reality Check:** In this S1 configuration, the switch is *not considered redundant at all*. It is simply acting as a standard IO Device "along for the ride" on that specific subnet. If the PLC attached to that subnet fails, the switch loses its PROFINET controller connection. While it functions as a Layer 2 access point, it does not provide true PROFINET system redundancy (reaction and diagnostics) for the switch itself.
+   * *To gain S2 functionality on a standard switch (where it logically talks to both CPUs), the network topology rules must change, which we will discover in Lab 2.*
+   * For now, proceed with the S1 assignment: Assign `Switch-A` to `PN/IE_1` and `Switch-B` to `PN/IE_2`. Navigate to their Media Redundancy settings and ensure `Switch-A` is an MRP Client in `mrpdomain-1` and `Switch-B` is an MRP Client in `mrpdomain-2`.
 
 5. **Multi-Assignment & IM Configuration of R1 Devices:**
    * Locate `ET200SP-A` in the `Network view`. This R1 node contains two separate Interface Modules (IMs).

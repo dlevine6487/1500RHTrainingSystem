@@ -20,11 +20,15 @@ This document provides guidance for instructors delivering the 6-hour practical 
 *   **Multi-assignment:** Emphasize the "Not assigned" link. Show them how the Topology view changes visually when multi-assignment is successful.
 
 ### Session 3: The Y-Switch (11:30 - 12:30)
-*   **The Subnet Refactoring Pinch Point:** When students attempt to introduce the Y-Switch, they will hit a wall because of the dual-subnet configuration from Session 2. Explain *why* this happens: Y-Switches in an S7-1500RH design require a single PROFINET IO subnet encompassing multiple domains. Force them to delete the second subnet and rebuild it as a single subnet. Emphasize that making this architectural decision early in a real project saves hours of rework.
+*   **The Subnet Refactoring Pinch Point (The "Why"):** When students attempt to multi-assign the Y-Switch, it will fail due to the dual-subnet configuration from Session 2. This is the moment to present the theory from the slides:
+    *   *Option 1 (Subnet Separation)* allowed them to build the pure R1 network in Lab 1 (offering symmetric IP addressing), but it *cannot* support a double-sided connection for S1 or S2 devices via a Y-Switch.
+    *   *Option 2 (Shared Subnet)* is required. To merge R1 components with S1/S2 devices, the controllers and IO must share a common subnet.
+    *   Force them to delete the disjoint subnets, create the unified `PN/IE_Plant` subnet, and then show them how this flat network allows the Y-Switch to connect, and *also* allows their standard backbone switches to be upgraded from S1 to S2 configurations.
 *   **The DNA Redundancy Setting:** This is often missed. The switch will act as a generic unmanaged switch if DNA Redundancy is not explicitly checked in the module parameters.
 *   **MRP Manager (Domain 3):** Explain *why* the Y-Switch is the manager. It isolates the MRP ring traffic of the subordinate S2 ring from the highly available R1 backbone. The backbone must not see Domain 3 traffic.
 
 ### Session 4: Populating S2 & Watchdogs (13:15 - 14:15)
+*   **Verifying Redundancy Modes:** Once the S2 devices are populated behind the Y-Switch, show students how to verify their architecture in TIA Portal. Have them open the `Network view`, select the `I/O communication` tab, and look at the `Mode` column. They should explicitly see the distinction verified here (e.g., the backbone ET200SP is `IO device(R1)`, the Y-Switch is `IO device(S2)`, and standard devices behind it are S2/S1).
 *   **The Watchdog Pinch Point:** This is the most critical lab. If students breeze through the multi-assignment and try to go to RUN without tuning the watchdogs, **let them**. When they test failover in the next session, their IO will drop. This is a powerful teaching moment about the ~300ms switchover latency of the S7-1518HF.
 *   **Templated Devices:** For the IE/PB Link HA and PN/PN Coupler, remind students that these are complex devices that often require their own dedicated training. For this class, they only need to verify the templated settings (e.g., F-Address matching on the Coupler) and ensure they are multi-assigned to the S2 network.
 *   **Download Sequence:** Remind them the IE/PB Link requires a separate hardware download *after* the CPUs are loaded. It will likely throw a 'Wrong configuration' alarm if loaded out of order.
