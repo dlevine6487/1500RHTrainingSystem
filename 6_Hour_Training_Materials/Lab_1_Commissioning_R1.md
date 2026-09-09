@@ -12,7 +12,7 @@
    * Locate the physical CPUs and ET200SP-A in the list. Use `Online & diagnostics` -> `Functions` -> `Assign PROFINET device name` and `Assign IP address` to set the name and IPs according to the documented architecture (e.g., PLC-A: 192.168.0.1, PLC-B: 192.168.0.2).
 
 2. **Initial Subnet Strategy:**
-   * Initially, we will build this network using two entirely separate PROFINET IO subnets (e.g., `PN/IE_1` for Side A and `PN/IE_2` for Side B). Create these subnets in the `Network view`.
+   * In the starter project they are labeled `PN/IE_PlantA` and `PN/IE_PlantB`. You need to rename them or create new ones.
    * Assign the primary CPU interface to `PN/IE_1`.
    * Assign the backup CPU interface to `PN/IE_2`.
 
