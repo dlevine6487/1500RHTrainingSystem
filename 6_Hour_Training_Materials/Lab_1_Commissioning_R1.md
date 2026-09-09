@@ -12,34 +12,35 @@
    * Locate the physical CPUs and ET200SP-A in the list. Use `Online & diagnostics` -> `Functions` -> `Assign PROFINET device name` and `Assign IP address` to set the name and IPs according to the documented architecture (e.g., PLC-A: 192.168.0.1, PLC-B: 192.168.0.2).
 
 2. **Initial Subnet Strategy:**
-   * Initially, we will build this network using the two entirely separate PROFINET IO subnets that have been pre-created in the starter project (`PN/IE_PlantA` for Side A and `PN/IE_PlantB` for Side B).
-   * Assign the primary CPU interface to `PN/IE_PlantA`.
-   * Assign the backup CPU interface to `PN/IE_PlantB`.
+   * In the starter project, the default subnets are labeled `PN/IE_PlantA` and `PN/IE_PlantB`. For this learning exercise, either rename them or create new ones labeled `PN/IE_1` and `PN/IE_2`.
+   * Assign the primary CPU interface to `PN/IE_1`.
+   * Assign the backup CPU interface to `PN/IE_2`.
 
-3. **Establish MRP Domains (Before Switch Configuration):**
-   * Before touching the network switches, we must establish the MRP Domains on the Redundant System.
-   * In `Network view`, select the `PLC_1` (Redundant system). Go to `Properties` -> `PROFINET interface [X1]` -> `Advanced options` -> `Media redundancy`.
-   * Assign PLC-A to manage `mrpdomain-1` (Side A).
-   * Assign PLC-B to manage `mrpdomain-2` (Side B).
+3. **Establish MRP Domains & Configure the R1 Station:**
+   * First, establish the MRP Domains on the Redundant System. Select `PLC_1`, go to `Properties` -> `PROFINET interface [X1]` -> `Advanced options` -> `Media redundancy`. Assign PLC-A to manage `mrpdomain-1` and PLC-B to manage `mrpdomain-2`.
+   * Locate `ET200SP-A` (the R1 device). Click "Not assigned" and select `PLC_1` to multi-assign it.
+   * **Crucial Step:** You must explicitly configure each IM individually. Select IM 1 (Side A), navigate to PROFINET properties, and assign it to `mrpdomain-1`. Assign IM 2 (Side B) to `mrpdomain-2`.
+   * *Why?* Even if you are not utilizing full physical MRP rings, this logical domain separation is absolutely required in the PLC to correctly split the R1 system paths.
 
-4. **Switch Setup: S1 vs. S2 Configuration:**
-   * Locate the backbone network switches (`Switch-A` and `Switch-B`).
-   * Currently, because our PLCs are on separate subnets (`PN/IE_PlantA` and `PN/IE_PlantB`), you can only assign a switch to *one* PLC subnet.
-   * Try clicking "Not Assigned" on `Switch-A`. You can only select PLC_1 via `PN/IE_PlantA`. This forces the switch into an **S1 PROFINET configuration**.
-   * **The Reality Check:** In this S1 configuration, the switch is *not considered redundant at all*. It is simply acting as a standard IO Device "along for the ride" on that specific subnet. If the PLC attached to that subnet fails, the switch loses its PROFINET controller connection. While it functions as a Layer 2 access point, it does not provide true PROFINET system redundancy (reaction and diagnostics) for the switch itself.
-   * *To gain S2 functionality on a standard switch (where it logically talks to both CPUs), the network topology rules must change, which we will discover in Lab 2.*
-   * For now, proceed with the S1 assignment: Assign `Switch-A` to `PN/IE_PlantA` and `Switch-B` to `PN/IE_PlantB`. Navigate to their Media Redundancy settings and ensure `Switch-A` is an MRP Client in `mrpdomain-1` and `Switch-B` is an MRP Client in `mrpdomain-2`.
+4. **The R1 Compilation Check:**
+   * Before touching the network switches, click on the `PLC_1` redundant system and click **Compile (Hardware)**.
+   * **Observation:** The project should compile perfectly with zero errors. This proves that a true R1 device (like the ET200SP R1) can successfully span two completely separate, disjoint subnets (`PN/IE_1` and `PN/IE_2`).
 
-5. **Multi-Assignment & IM Configuration of R1 Devices:**
-   * Locate `ET200SP-A` in the `Network view`. This R1 node contains two separate Interface Modules (IMs).
-   * First, click the "Not assigned" link on the PROFINET interface for the station. Select the redundant `PLC_1` system to multi-assign it. You will see the network lines visually connect to both rings.
-   * **Crucial Step:** You must explicitly configure each IM individually within the station properties. Select IM 1 (Side A) and navigate to its PROFINET interface properties. Assign it explicitly to `mrpdomain-1`.
-   * Then, select IM 2 (Side B) and assign it explicitly to `mrpdomain-2`.
-   * *Why?* Even if you are not utilizing full MRP (Media Redundancy Protocol) for physical ring topologies in a specific installation, this logical domain separation is absolutely required in the PLC controller to correctly split the R1 system and manage communication paths during a failover.
-
-6. **Pivot Point 1: Expanding the Portfolio (ET200SP HA):**
-   * Before proceeding to standard devices, pause lab work.
+5. **Pivot Point 1: Expanding the Portfolio (ET200SP HA):**
+   * Pause lab work.
    * **Guest Presentation (15 Min):** A presenter will discuss the ET200SP HA. While not utilized in this specific lab environment, it serves as a point-in-case that there are other robust, purpose-built R1 devices available in the Siemens portfolio tailored for high-availability setups.
+
+6. **The Switch Compilation Pinch Point (The Flat Network Requirement):**
+   * Now, locate the backbone network switches (`Switch-A` and `Switch-B`).
+   * As a first-time user, it makes intuitive sense to assign `Switch-A` to `PN/IE_1` and `Switch-B` to `PN/IE_2`, and then set up their respective MRP Client configurations to match the domains. Go ahead and try to set them up this way, attempting to multi-assign them to the redundant system if possible.
+   * **Compile the Hardware.**
+   * **The Lesson:** It fails! A first-time user expects this to work based on the previous R1 success, but the PLC will not compile. Why? To function correctly in a redundant scenario (and to be properly multi-assigned as S2 devices), standard network switches like the XC208 require a single, unified PROFINET IO network. They cannot span disjoint networks like a true R1 IO station can.
+   * **Action (Refactor the Network):**
+     1. Delete the disjoint subnets (`PN/IE_1` and `PN/IE_2`).
+     2. Create a new, single PROFINET subnet and name it `PN/IE_Plant`.
+     3. Assign both the Primary and Backup CPU PROFINET interfaces to this unified `PN/IE_Plant` subnet.
+     4. Re-assign `Switch-A` and `Switch-B`, and the ET200SP-A interfaces to `PN/IE_Plant`.
+     5. Notice that you can now successfully multi-assign the switches as S2 devices, granting them true PROFINET redundancy. Re-verify your MRP domain assignments (`mrpdomain-1` and `mrpdomain-2`). Compile again to ensure success.
 
 > **Pro-Tip: Avoiding Split Brains**
 > When setting up the MRP rings, ensure that Domain 1 and Domain 2 are physically and logically completely isolated. Do not cross-connect the switches on Side A to Side B. The only device that should communicate across both is the R1 IO node or the Y-Switch. A cross-connection can cause an MRP storm or lead to a "split-brain" scenario where both CPUs attempt to assume the Primary role.

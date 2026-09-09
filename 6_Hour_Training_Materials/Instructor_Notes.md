@@ -15,15 +15,16 @@ This document provides guidance for instructors delivering the 6-hour practical 
 *   **Demo Kit Orientation:** Spend 5 minutes physically pointing out the components on the demo kit. Show them the split backbone wiring vs. the subordinate S2 ring wiring.
 
 ### Session 2: Commissioning R1 (10:00 - 11:30)
-*   **The Initial Setup Pinch Point:** The lab purposefully instructs students to build the network using two separate PROFINET subnets and configuring the backbone switches for S1 usage. This works perfectly for a pure R1 setup. **Do not correct them here.** This is setup for a powerful lesson in Session 3.
+*   **The Initial Setup Pinch Point & Flat Network Transition:** The lab purposefully instructs students to build the initial R1 network using two separate PROFINET subnets (`PN/IE_1` and `PN/IE_2`). This works perfectly for the pure R1 ET200SP and compiles successfully. However, the pinch point arrives immediately afterward in this same session when they try to add the standard network switches.
+*   **The S2 Compilation Failure (The "Why"):** When students attempt to compile with the standard switches on disjoint subnets, it will fail. This is the moment to present the theory from the slides:
+    *   *Option 1 (Subnet Separation)* allowed them to build the pure R1 ET200SP, but it *cannot* support a multi-assigned S2 connection for standard switches.
+    *   *Option 2 (Shared Subnet)* is structurally required to satisfy TIA Portal compilation. To merge R1 components with S2 devices, the controllers and IO must share a common, flat subnet.
+    *   Force them to delete the disjoint subnets, create the unified `PN/IE_Plant` subnet, and then show them how this flat network allows the standard switches to compile successfully as S2 multi-assigned devices.
 *   **Watch for:** Students accidentally cross-connecting the MRP domains. Domain 1 and Domain 2 must be strictly separate. If a student creates an MRP ring that encompasses both switches and both PLC sides, the network will storm and the CPUs will fail to sync.
-*   **Pivot Point 1 (Presenter Handoff):** Once the students finish configuring the R1 ET200SP, hand off to the presenter for a 15-minute presentation showcasing the ET200SP HA as another R1 device available in the Siemens portfolio.
+*   **Pivot Point 1 (Presenter Handoff):** Once the students finish configuring the R1 ET200SP (before the switch failure pinch point), hand off to the presenter for a 15-minute presentation showcasing the ET200SP HA as another R1 device available in the Siemens portfolio.
 
 ### Session 3: The Y-Switch & Subordinate Networks (11:45 - 13:00)
-*   **The Subnet Refactoring Pinch Point (The "Why"):** When students attempt to multi-assign the Y-Switch, it will fail due to the dual-subnet configuration from Session 2. This is the moment to present the theory from the slides:
-    *   *Option 1 (Subnet Separation)* allowed them to build the pure R1 network in Lab 1 (offering symmetric IP addressing), but it *cannot* support a double-sided connection for S1 or S2 devices via a Y-Switch.
-    *   *Option 2 (Shared Subnet)* is structurally required to satisfy TIA Portal compilation. To merge R1 components with S1/S2 devices, the controllers and IO must share a common, flat subnet.
-    *   Force them to delete the disjoint subnets, create the unified `PN/IE_Plant` subnet, and then show them how this flat network allows the Y-Switch to compile successfully.
+*   **Smooth Y-Switch Integration:** Because the students already refactored the network to a flat `PN/IE_Plant` subnet in Session 2, integrating the Y-Switch here will be straightforward and compile without issues, reinforcing the network topology lesson they just learned.
 *   **The DNA Redundancy Setting:** This is often missed. The switch will act as a generic unmanaged switch if DNA Redundancy is not explicitly checked in the module parameters.
 *   **MRP Manager (Domain 3):** Explain *why* the Y-Switch is the manager. It isolates the MRP ring traffic of the subordinate S2 ring from the highly available R1 backbone. The backbone must not see Domain 3 traffic.
 

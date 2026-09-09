@@ -4,25 +4,19 @@
 
 ### Step-by-Step Configuration:
 
-1. **The Subnet Refactoring Pinch Point (The Flat Network Requirement):**
-   * Try to multi-assign the `YSwitch-A` (or the backbone switches) to the redundant system in the `Network view` to make them S2 devices. Because your PLCs are on separate subnets (`PN/IE_PlantA` and `PN/IE_PlantB`), the S2 Multi-assignment *will fail* during compilation.
-   * **The Lesson:** An S2 device (like the Y-Switch, and the devices behind it) requires a logical path to *both* CPUs simultaneously. This is structurally impossible if the CPUs reside on disjoint PROFINET subnets. While R1 devices can handle disjoint subnets (as seen in Lab 1), introducing an S2 device into the system absolutely mandates a flat network view configuration across *one* PROFINET subnet.
-   * **Action:**
-     1. Refactor your network. Delete the disjoint subnets (`PN/IE_PlantA` and `PN/IE_PlantB`).
-     2. Create a new, single PROFINET subnet and rename it to `PN/IE_Plant`.
-     3. Assign both the Primary CPU and Backup CPU PROFINET interfaces to this unified `PN/IE_Plant` subnet.
-     4. Re-assign `Switch-A` and `Switch-B` to `PN/IE_Plant`. Note that you can now multi-assign them as S2 devices if desired, granting them true PROFINET redundancy and diagnostic reporting!
-     5. Re-verify your MRP domain assignments (`mrpdomain-1` and `mrpdomain-2`) are still correctly applied to the PLCs and Switches.
+1. **Introduction to the Y-Switch & Subordinate Networks:**
+   * In Lab 1, we learned that introducing S2 devices (like standard switches) requires a single unified PROFINET subnet (`PN/IE_Plant`). Because we have already refactored our network to meet this requirement, introducing the Y-Switch will be a straightforward process.
+   * The Y-Switch allows us to take a standard device that does not support S2 redundancy natively, and place it behind an S2 capable device. The Y-Switch itself connects to both R1 backbone rings (Side A and Side B) and manages a subordinate MRP ring for the standard devices.
+   * Locate the `YSwitch-A` device in the `Network view` (it is pre-positioned). Click "Not assigned" on its PROFINET interface and select `PLC_1` to multi-assign it as an S2 device. Because the network is already flat, this will succeed.
 
 2. **Verifying Redundancy Modes in TIA Portal:**
-   * After the network is refactored to a shared subnet and devices are multi-assigned, you can explicitly verify the connection types.
+   * Now that the Y-Switch is multi-assigned, you can explicitly verify the connection types.
    * In the `Network view`, click on the `I/O communication` tab located above the tabular area.
-   * Look at the `Mode` column. You should clearly see the distinction between your devices: The backbone ET200SP-A will be listed as `IO device(R1)`, while multi-assigned switches/Y-Switches will display as `IO device(S2)`, and single-assigned devices will show `IO device(S1)`.
+   * Look at the `Mode` column. You should clearly see the distinction between your devices: The backbone ET200SP-A will be listed as `IO device(R1)`, while your multi-assigned switches and the `YSwitch-A` will display as `IO device(S2)`.
 
 3. **Enable DNA Redundancy:**
-   * Locate the `YSwitch-A` device in the `Network view` (it is pre-positioned).
-   * Select the device and go to `Properties` -> `General` -> `Module parameters`.
-   * Locate the setting for `DNA redundancy` and explicitly enable it. This tells the switch it is acting as a Y-Switch, not a standard Scalance switch.
+   * Select the `YSwitch-A` device and go to `Properties` -> `General` -> `Module parameters`.
+   * Locate the setting for `DNA redundancy` and explicitly enable it. This is the crucial step that tells the switch it is acting as a Y-Switch and not a standard Scalance switch.
 
 4. **Configure Ring Redundancy (MRP Manager):**
    * Go to `Properties` -> `PROFINET interface [X1]` -> `Advanced options` -> `Media redundancy`.
