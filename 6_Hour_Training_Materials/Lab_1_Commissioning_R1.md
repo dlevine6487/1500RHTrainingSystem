@@ -44,3 +44,37 @@
 
 > **Pro-Tip: Avoiding Split Brains**
 > When setting up the MRP rings, ensure that Domain 1 and Domain 2 are physically and logically completely isolated. Do not cross-connect the switches on Side A to Side B. The only device that should communicate across both is the R1 IO node or the Y-Switch. A cross-connection can cause an MRP storm or lead to a "split-brain" scenario where both CPUs attempt to assume the Primary role.
+
+### R1 Architecture Recap & Port Projection
+
+At the end of this lab, your physical and logical topology should look like the diagram below. Note that the H-Sync fiber link (X3 to X3) directly connects the CPUs for cycle-synchronous redundancy, completely independent of the PROFINET IO networks on X1.
+
+```text
+               +-------------------------------------------------+
+               |                   H-Sync Link                   |
+               |             (Direct Fiber Connection)           |
+               |                                                 |
+         [X3 P1/P2]                                        [X3 P1/P2]
+      +---------------+                                 +---------------+
+      |   PLC-A (1)   |                                 |   PLC-B (2)   |
+      | S7-1518HF CPU |                                 | S7-1518HF CPU |
+      +---------------+                                 +---------------+
+         [X1 P1/P2]                                        [X1 P1/P2]
+             |                                                 |
+             |                                                 |
+             | PN/IE_Plant (mrpdomain-1)                       | PN/IE_Plant (mrpdomain-2)
+             |                                                 |
+       +-----------+                                     +-----------+
+       | Switch-A  |                                     | Switch-B  |
+       | (S2 Node) |                                     | (S2 Node) |
+       +-----------+                                     +-----------+
+             |                                                 |
+             |                                                 |
+             +-----------------------+-------------------------+
+                                     |
+                                [IM1 | IM2]
+                              +-------------+
+                              | ET200SP-A   |
+                              |  (R1 Node)  |
+                              +-------------+
+```
