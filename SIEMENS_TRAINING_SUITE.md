@@ -4,6 +4,25 @@ Welcome to the Siemens S7-1518HF Training & Integration Suite. This documentatio
 
 ## Table of Contents
 
+### Full Courses & Itineraries
+*   **[6-Hour Practical Commissioning Course](6_Hour_Training_Course.md):** Hands-on labs focusing on R1 Backbone, Y-Switch, and S2 Subordinate Ring configuration.
+    * *Instructor Materials:*
+        * *[Session 1: Fundamentals (Notes)](6_Hour_Training_Materials/Instructor/Session_1/Instructor_Notes.md)*
+        * *[Session 2: Commissioning R1 (Notes)](6_Hour_Training_Materials/Instructor/Session_2/Instructor_Notes.md) | [Lab 1](6_Hour_Training_Materials/Instructor/Session_2/Lab_1_Commissioning_R1.md)*
+        * *[Session 3: Y-Switch (Notes)](6_Hour_Training_Materials/Instructor/Session_3/Instructor_Notes.md) | [Lab 2](6_Hour_Training_Materials/Instructor/Session_3/Lab_2_YSwitch_S2.md)*
+        * *[Session 4: Watchdogs (Notes)](6_Hour_Training_Materials/Instructor/Session_4/Instructor_Notes.md) | [Lab 3](6_Hour_Training_Materials/Instructor/Session_4/Lab_3_S2_Watchdogs.md)*
+        * *[Session 5: Failures (Notes)](6_Hour_Training_Materials/Instructor/Session_5/Instructor_Notes.md) | [Lab 4](6_Hour_Training_Materials/Instructor/Session_5/Lab_4_Failures.md)*
+        * *[Session 6: Programming Wrap-up (Notes)](6_Hour_Training_Materials/Instructor/Session_6/Instructor_Notes.md)*
+    * *Student Materials:*
+        * *[Session 1: Fundamentals (Theory)](6_Hour_Training_Materials/Student/Session_1/Theory_Overview.md)*
+        * *[Session 2: Lab 1](6_Hour_Training_Materials/Student/Session_2/Lab_1_Commissioning_R1.md)*
+        * *[Session 3: Lab 2](6_Hour_Training_Materials/Student/Session_3/Lab_2_YSwitch_S2.md)*
+        * *[Session 4: Lab 3](6_Hour_Training_Materials/Student/Session_4/Lab_3_S2_Watchdogs.md)*
+        * *[Session 5: Lab 4](6_Hour_Training_Materials/Student/Session_5/Lab_4_Failures.md)*
+        * *[Session 6: Programming Wrap-up (Theory)](6_Hour_Training_Materials/Student/Session_6/Theory_Overview.md)*
+*   **[1-Hour Executive Overview Course](1_Hour_Training_Course.md):** A high-level theoretical overview without hands-on labs, ideal for management and architectural planning.
+
+### Technical Deep-Dive Modules (Reference)
 ### [Module 1: R1 Backbone Architecture & Station Integration](Training_Modules/Module_1_R1_Backbone.md)
 *   **Topics:** Split Backbone Topology, XC208 Switch Configuration (MRP Clients), R1 Remote IO Setup, Watchdog Tuning.
 
