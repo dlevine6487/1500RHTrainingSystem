@@ -13,6 +13,8 @@
 2. **TIA Portal Projection: Enable DNA & MRP Domains:**
    * Select the `YSwitch-A` device and go to `Properties` -> `General` -> `Module parameters`.
    * Locate the setting for `DNA redundancy` and explicitly enable it. This is the crucial step that tells the switch it is acting as a Y-Switch and not a standard Scalance switch.
+
+![Y-Switch DNA Redundancy](../../../Training_Modules/images/yswitch_dna_param.png)
    * Next, go to `Properties` -> `PROFINET interface [X1]` -> `Advanced options` -> `Media redundancy`.
    * Set the Media Redundancy Role to **MRP Manager**.
    * Under the MRP Domain drop-down, select `mrpdomain-3`. *(If `mrpdomain-3` does not exist: Click the 'Domain settings' button, add Domain 3 to the project's MRP configurations, and ensure it is assigned to this switch's subnet).*
@@ -35,3 +37,10 @@
 
 > **Pro-Tip: Topology View Verification**
 > The number one cause of Y-Switch commissioning failure is a mismatch between the physical wiring and the logical configuration in TIA Portal. Always use the `Topology view` in TIA Portal to explicitly draw the connections for the Y-Switch uplinks and the subordinate ring ports. If the graphical topology does not compile or match reality, the switch will likely fail to transition out of a fault state.
+
+![Y-Switch Topology](../../../Training_Modules/images/yswitch_topology.png)
+
+### Reference Documents
+*   `Application_Examples_and_Docs/System_Architecture_and_Manuals/s7-1500_manual_collection_en-US_en-US.pdf` (Pages 628-629)
+*   `Application_Examples_and_Docs/Redundancy_and_MRP/109816704_S7-1500H_with_Y-Switch_V1_0_en.pdf`
+*   `Application_Examples_and_Docs/Hardware_Components/pn_pn_coupler_hardware_manual_en-US_en-US.pdf`
