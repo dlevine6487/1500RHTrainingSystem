@@ -49,6 +49,8 @@
 
 At the end of this lab, your physical and logical topology should look like the diagram below. Note that the H-Sync fiber link (X3 to X3) directly connects the CPUs for cycle-synchronous redundancy, completely independent of the PROFINET IO networks on X1.
 
+![Network Topology Diagram](../../../Training_Modules/images/Network%20Topology%20Diagram.png)
+
 ```text
                +-------------------------------------------------+
                |                   H-Sync Link                   |
@@ -78,3 +80,8 @@ At the end of this lab, your physical and logical topology should look like the 
                               |  (R1 Node)  |
                               +-------------+
 ```
+
+### Reference Documents
+*   `Application_Examples_and_Docs/System_Architecture_and_Manuals/s71500rh_manual_en-US_en-US_v21.pdf`
+*   `Application_Examples_and_Docs/Hardware_Components/et200sp_im_155_6_pn_r1_en-US_en-US.pdf`
+*   `Application_Examples_and_Docs/Redundancy_and_MRP/109739614_MRP_DOKU_V10_en.pdf`
